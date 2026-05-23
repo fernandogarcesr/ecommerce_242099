@@ -1,0 +1,841 @@
+/* SportsZone
+   Fernando Garces Rodriguez — 242099*/
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+    --naranja:      #ff5200;
+    --naranja-dark: #d94500;
+    --negro:        #0a0d14;
+    --negro-mid:    #141921;
+    --blanco:       #f8fafc;
+    --gris-borde:   #e2e8f0;
+    --gris-texto:   #64748b;
+    --gris-fondo:   #f1f5f9;
+    --rojo:         #ef4444;
+    --verde:        #16a34a;
+    --azul:         #2563eb;
+    --sidebar-w:    240px;
+    --header-h:     62px;
+    --radio:        7px;
+    --sombra:       0 1px 8px rgba(0,0,0,0.08);
+    --fuente-titulo: 'Barlow Condensed', sans-serif;
+    --fuente-cuerpo: 'Nunito', sans-serif;
+}
+
+/* reset*/
+*, *::before, *::after {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fuente-cuerpo);
+    background: var(--blanco);
+    color: var(--negro);
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* 
+   GRID PRINCIPAL 
+ */
+html, body { height: 100%; }
+.grid-container {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    grid-template-rows: var(--header-h) 1fr auto;
+    grid-template-areas:
+        "sidebar header"
+        "sidebar content"
+        "sidebar footer";
+    min-height: 100vh;
+    height: 100%;
+}
+
+/* HEADER*/
+.header-tienda {
+    grid-area: header;
+    background: #fff;
+    border-bottom: 1px solid var(--gris-borde);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.usuario-header {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.usuario-header a,
+.usuario-header span {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--gris-texto);
+    transition: color .15s;
+}
+
+.usuario-header a:hover { color: var(--naranja); }
+
+.usuario-header .bienvenido { color: var(--negro); }
+
+.usuario-header .link-admin {
+    color: var(--naranja);
+    font-weight: 800;
+}
+
+.usuario-header .link-salir { color: var(--rojo); }
+
+/*SIDEBAR*/
+.sidebar-tienda {
+    grid-area: sidebar;
+    background: var(--negro);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #1e293b;
+}
+
+.sidebar-logo {
+    padding: 0 1.5rem;
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #1e293b;
+    flex-shrink: 0;
+}
+
+.sidebar-logo span {
+    font-family: var(--fuente-titulo);
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    color: #fff;
+    font-weight: 800;
+}
+
+.sidebar-logo span em {
+    color: var(--naranja);
+    font-style: normal;
+}
+
+.sidebar-seccion {
+    padding: 1.4rem 1.5rem 0.4rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #475569;
+    display: block;
+}
+
+.menu-lista {
+    list-style: none;
+    padding: 0 0.8rem;
+    flex: 1;
+}
+
+.menu-lista li { margin-bottom: 2px; }
+
+.menu-lista a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #94a3b8;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.65rem 0.8rem;
+    border-radius: var(--radio);
+    border-left: 3px solid transparent;
+    transition: all .15s ease;
+}
+
+.menu-lista a:hover,
+.menu-lista a.activo {
+    background: rgba(255,82,0,0.12);
+    color: #fff;
+    border-left-color: var(--naranja);
+}
+
+/* CONTENT*/
+.content {
+    grid-area: content;
+    padding: 2rem 2.2rem;
+    background: var(--gris-fondo);
+    min-height: 0; /* evita overflow en grid */
+}
+
+/*FOOTER*/
+.footer {
+    grid-area: footer;
+    background: #fff;
+    border-top: 1px solid var(--gris-borde);
+    padding: 1rem 2rem;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--gris-texto);
+}
+
+/* 
+   PAGINAS DE AUTENTICACION
+   Login y Register sin sidebar*/
+
+/* wrapper que centra la caja en el content */
+.form-wrapper-centro {
+    display: flex;
+    align-items: flex-start; 
+    justify-content: center;
+    padding-top: 2rem;
+}
+
+.caja-autenticacion {
+    background: #fff;
+    padding: 2.4rem 2.2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+    border: 1px solid var(--gris-borde);
+    width: 100%;
+    max-width: 440px;
+}
+
+.caja-autenticacion h1 {
+    font-family: var(--fuente-titulo);
+    font-size: 1.9rem;
+    letter-spacing: .5px;
+    color: var(--negro);
+    margin-bottom: 0.2rem;
+}
+
+.caja-autenticacion .subtitulo-form {
+    font-size: 0.85rem;
+    color: var(--gris-texto);
+    font-weight: 600;
+    margin-bottom: 1.6rem;
+}
+
+.caja-autenticacion .marca-naranja { color: var(--naranja); }
+
+.input-bloque { margin-bottom: 1rem; }
+
+.input-bloque label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 800;
+    font-size: 0.78rem;
+    color: #334155;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.input-campo {
+    width: 100%;
+    padding: 0.72rem 0.9rem;
+    border: 1.5px solid var(--gris-borde);
+    border-radius: var(--radio);
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.95rem;
+    color: var(--negro);
+    font-weight: 600;
+    transition: border-color .15s;
+    outline: none;
+    background: #fff;
+}
+
+.input-campo:focus { border-color: var(--naranja); }
+
+.form-link {
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--gris-texto);
+    text-align: center;
+    margin-top: 1.2rem;
+}
+
+.form-link a { color: var(--naranja); font-weight: 800; }
+.form-link a:hover { text-decoration: underline; }
+
+/* 
+   BOTONES
+  */
+.btn-deportivo-accion {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--negro);
+    color: #fff;
+    border: none;
+    padding: 0.68rem 1.4rem;
+    font-family: var(--fuente-cuerpo);
+    font-weight: 800;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    cursor: pointer;
+    border-radius: var(--radio);
+    text-decoration: none;
+    transition: background .18s;
+    white-space: nowrap;
+}
+
+.btn-deportivo-accion:hover { background: var(--naranja); }
+
+.btn-naranja { background: var(--naranja) !important; }
+.btn-naranja:hover { background: var(--naranja-dark) !important; }
+
+.btn-sm { padding: 0.45rem 0.9rem; font-size: 0.75rem; }
+
+.btn-rojo  { background: var(--rojo)  !important; }
+.btn-verde { background: var(--verde) !important; }
+.btn-azul  { background: var(--azul)  !important; }
+
+.btn-outline {
+    background: transparent !important;
+    color: var(--negro) !important;
+    border: 1.5px solid var(--negro) !important;
+}
+.btn-outline:hover {
+    background: var(--negro) !important;
+    color: #fff !important;
+}
+
+/* 
+   ENCABEZADOS DE SECCION
+*/
+.top-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+    flex-wrap: wrap;
+}
+
+.top-contenedor h1 {
+    font-family: var(--fuente-titulo);
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: .5px;
+    color: var(--negro);
+}
+
+/* 
+   TABLAS
+ */
+.tabla-deportiva-global {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--radio);
+    overflow: hidden;
+    border: 1px solid var(--gris-borde);
+    box-shadow: var(--sombra);
+}
+
+.tabla-deportiva-global th {
+    background: var(--negro);
+    color: #fff;
+    padding: 0.85rem 1rem;
+    text-align: left;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+}
+
+.tabla-deportiva-global td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--gris-borde);
+    font-size: 0.92rem;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.tabla-deportiva-global tbody tr:last-child td { border-bottom: none; }
+
+.tabla-deportiva-global tbody tr:hover { background: var(--gris-fondo); }
+
+.acciones-tabla {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* 
+   BADGES
+ */
+.badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+.badge-pendiente  { background: #fff3e0; color: #c2410c; }
+.badge-enviado    { background: #dbeafe; color: #1d4ed8; }
+.badge-entregado  { background: #dcfce7; color: #15803d; }
+.badge-activo     { background: #dcfce7; color: #15803d; }
+.badge-inactivo   { background: #fee2e2; color: #b91c1c; }
+
+/* 
+ (INDEX)
+  */
+.banner-bienvenida {
+    background: var(--negro);
+    border-radius: 12px;
+    padding: 2.8rem 3rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.banner-bienvenida::after {
+    content: 'SPORT';
+    position: absolute;
+    right: -10px; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--fuente-titulo);
+    font-size: 9rem;
+    color: rgba(255,255,255,0.03);
+    letter-spacing: 4px;
+    pointer-events: none;
+    line-height: 1;
+}
+
+.banner-bienvenida h2 {
+    font-family: var(--fuente-titulo);
+    font-size: 2.8rem;
+    letter-spacing: 1px;
+    line-height: 1.05;
+    margin-bottom: 0.8rem;
+}
+
+.banner-bienvenida h2 span { color: var(--naranja); }
+
+.banner-bienvenida p {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,.65);
+    max-width: 480px;
+    line-height: 1.65;
+    margin-bottom: 1.6rem;
+}
+
+.tarjeta-autor {
+    background: #fff;
+    padding: 1.4rem 1.8rem;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    border-left: 4px solid var(--naranja);
+    max-width: 420px;
+}
+
+.tarjeta-autor p {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+.tarjeta-autor .id-badge {
+    display: inline-block;
+    background: var(--gris-fondo);
+    color: var(--gris-texto);
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 1px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+}
+
+/* 
+   CATALOGO — grid lateral de filtros
+ */
+.grid-catalogo {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 1.8rem;
+    align-items: flex-start;
+}
+
+.panel-filtros {
+    background: #fff;
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    padding: 1.4rem;
+    box-shadow: var(--sombra);
+    position: sticky;
+    top: calc(var(--header-h) + 1rem);
+}
+
+.panel-filtros h3 {
+    font-family: var(--fuente-titulo);
+    font-size: 1.1rem;
+    letter-spacing: .5px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--naranja);
+}
+
+.catalogo-productos-seccion { min-width: 0; }
+
+/* radio custom para filtros de precio */
+.opcion-radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.opcion-radio input[type="radio"] { display: none; }
+
+.circulo-radio {
+    width: 17px; height: 17px;
+    border: 2px solid #94a3b8;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .15s;
+    flex-shrink: 0;
+}
+
+.circulo-radio::after {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--naranja);
+    display: none;
+}
+
+.opcion-radio input:checked + .circulo-radio { border-color: var(--naranja); }
+.opcion-radio input:checked + .circulo-radio::after { display: block; }
+
+/* 
+   DETALLES DEL PRODUCTO
+ */
+.detalle-producto-container {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 2.5rem;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid var(--gris-borde);
+    box-shadow: var(--sombra);
+    margin-bottom: 2rem;
+}
+
+.foto-producto-box img {
+    width: 100%;
+    max-width: 340px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--gris-borde);
+}
+
+.precio-detalle {
+    font-family: var(--fuente-titulo);
+    font-size: 2.6rem;
+    color: var(--naranja);
+    margin: 0.5rem 0 1rem;
+}
+
+.disponibilidad-tag {
+    display: inline-block;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+}
+
+/* 
+   CARRITO — grid 2 columnas
+  */
+.grid-carrito {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 1.8rem;
+    align-items: flex-start;
+}
+
+.caja-resumen {
+    background: #fff;
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    padding: 1.6rem;
+    box-shadow: var(--sombra);
+    position: sticky;
+    top: calc(var(--header-h) + 1rem);
+}
+
+.caja-resumen h3 {
+    font-family: var(--fuente-titulo);
+    font-size: 1.3rem;
+    letter-spacing: .5px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--gris-borde);
+}
+
+.fila-resumen {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--gris-texto);
+}
+
+.fila-resumen.total {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--negro);
+    border-top: 1.5px solid var(--gris-borde);
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.fila-resumen.total .monto {
+    color: var(--naranja);
+    font-family: var(--fuente-titulo);
+    font-size: 1.5rem;
+}
+
+/* 
+   FORMULARIOS DE PERFIL / ADMIN
+  */
+.caja-form {
+    background: #fff;
+    border: 1px solid var(--gris-borde);
+    border-radius: 10px;
+    padding: 2rem 2.2rem;
+    max-width: 640px;
+    box-shadow: var(--sombra);
+}
+
+.caja-form h2 {
+    font-family: var(--fuente-titulo);
+    font-size: 1.4rem;
+    letter-spacing: .5px;
+    margin-bottom: 1.4rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 2px solid var(--gris-borde);
+}
+
+.botones-form {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1.4rem;
+}
+
+/*
+   PANEL ADMIN 
+   */
+.grid-admin-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+    max-width: 680px;
+}
+
+.admin-card-link {
+    background: #fff;
+    border: 1px solid var(--gris-borde);
+    border-radius: 10px;
+    padding: 1.8rem 1.6rem;
+    text-decoration: none;
+    color: var(--negro);
+    box-shadow: var(--sombra);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    transition: all .18s ease;
+    border-left: 4px solid transparent;
+}
+
+.admin-card-link:hover {
+    border-left-color: var(--naranja);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.icono-card {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    background: var(--naranja);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/*
+   GESTION DE PEDIDOS ADMIN — tabla encabezado con boton
+  */
+.tabla-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/*
+   CONFIRMACION DE COMPRA
+  */
+.confirmacion-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+}
+
+.icono-ok {
+    width: 68px; height: 68px;
+    background: #dcfce7;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    color: #15803d;
+}
+
+.titulo-confirmacion {
+    font-family: var(--fuente-titulo);
+    font-size: 2.4rem;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1.1;
+}
+
+.titulo-confirmacion span { color: var(--naranja); }
+
+.grid-detalles-pedido {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 8px 14px;
+    align-items: center;
+    width: 100%;
+}
+
+.etiqueta-pedido {
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--gris-texto);
+    text-align: right;
+}
+
+.valor-pedido {
+    background: var(--gris-fondo);
+    padding: 7px 12px;
+    border-radius: var(--radio);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* 
+   BOTON VOLVER
+   */
+.btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: var(--gris-texto);
+    margin-bottom: 1.2rem;
+    transition: color .15s;
+}
+
+.btn-volver:hover { color: var(--naranja); }
+
+/*
+   MENSAJES DE ALERTA
+ */
+.alerta-error {
+    background: #fef2f2;
+    border-left: 4px solid var(--rojo);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    color: #b91c1c;
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+.alerta-exito {
+    background: #f0fdf4;
+    border-left: 4px solid var(--verde);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    color: #15803d;
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+/* 
+   RESEÑAS
+  */
+.resena-card {
+    background: #fff;
+    border: 1px solid var(--gris-borde);
+    border-radius: var(--radio);
+    padding: 1rem 1.2rem;
+    margin-bottom: 10px;
+    box-shadow: var(--sombra);
+}
+
+.resena-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.resena-usuario { font-weight: 800; font-size: 0.92rem; }
+.resena-fecha   { font-size: 0.78rem; color: var(--gris-texto); }
+.resena-estrellas { color: var(--naranja); margin-bottom: 4px; }
+.resena-texto   { font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
+
+/*
+   RESPONSIVE BASICO
+ */
+@media (max-width: 860px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "content"
+            "footer";
+    }
+    .sidebar-tienda { display: none; }
+    .content { padding: 1.2rem; }
+    .grid-catalogo,
+    .grid-carrito,
+    .detalle-producto-container { grid-template-columns: 1fr; }
+    .grid-admin-cards { grid-template-columns: 1fr; }
+}

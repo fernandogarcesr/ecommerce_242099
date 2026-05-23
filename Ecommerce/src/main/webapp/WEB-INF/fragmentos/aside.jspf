@@ -1,0 +1,68 @@
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page pageEncoding="UTF-8" %>
+<%-- aside.jspf — menu lateral de navegaciun --%>
+<aside class="sidebar-tienda">
+
+    <%-- logo dentro del sidebar, alineado con el header --%>
+    <div class="sidebar-logo">
+        <a href="${pageContext.request.contextPath}/Index.jsp" style="text-decoration:none;">
+            <span>Sport<em>Zone</em></span>
+        </a>
+    </div>
+
+    <span class="sidebar-seccion">Tienda</span>
+    <ul class="menu-lista">
+        <li>
+            <a href="${pageContext.request.contextPath}/Index.jsp">
+                ⌂&nbsp; Inicio
+            </a>
+        </li>
+        <li>
+            <a href="${pageContext.request.contextPath}/Catalogo.jsp">
+                ◫&nbsp; Catálogo
+            </a>
+        </li>
+        <li>
+            <a href="${pageContext.request.contextPath}/Carrito.jsp">
+                ⊞&nbsp; Carrito
+            </a>
+        </li>
+        <li>
+            <a href="${pageContext.request.contextPath}/Pedidos.jsp">
+                ☰&nbsp; Mis pedidos
+            </a>
+        </li>
+    </ul>
+
+    <c:if test="${sessionScope.rol == 'ADMINISTRADOR'}">
+        <span class="sidebar-seccion">Administración</span>
+        <ul class="menu-lista">
+            <li>
+                <a href="${pageContext.request.contextPath}/AdminPrincipal.jsp">
+                    ⊟&nbsp; Panel admin
+                </a>
+            </li>
+        </ul>
+    </c:if>
+
+    <span class="sidebar-seccion">Cuenta</span>
+    <ul class="menu-lista">
+        <c:choose>
+            <c:when test="${empty sessionScope.usuarioActual}">
+                <li>
+                    <a href="${pageContext.request.contextPath}/Login.jsp">
+                        → Iniciar sesión
+                    </a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li>
+                    <a href="${pageContext.request.contextPath}/PerfilUsuarios.jsp">
+                        ○&nbsp; Mi perfil
+                    </a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+    </ul>
+
+</aside>

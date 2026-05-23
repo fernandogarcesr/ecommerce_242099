@@ -1,0 +1,84 @@
+<%-- 
+    Document   : AdminUsuarios
+    Created on : 24 mar 2026, 14:26:32
+    Author     : Fernando Garces
+--%>
+
+<%-- AdminUsuarios.jsp — gestion de cuentas de usuario --%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios – SportsZone Admin</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
+</head>
+<body>
+<div class="grid-container">
+    <%@include file="/WEB-INF/fragmentos/aside.jspf" %>
+    <%@include file="/WEB-INF/fragmentos/header.jspf" %>
+    <main class="content">
+        <a href="${pageContext.request.contextPath}/AdminPrincipal.jsp" class="btn-volver">← Panel admin</a>
+        <div class="top-contenedor">
+            <h1>Gestión de usuarios</h1>
+        </div>
+        <table class="tabla-deportiva-global">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Fecha de registro</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:choose>
+                    <c:when test="${not empty requestScope.usuarios}">
+                        <c:forEach var="u" items="${requestScope.usuarios}">
+                            <tr>
+                                <td style="font-weight:800;">${u.nombre}</td>
+                                <td style="color:var(--gris-texto);">${u.correo}</td>
+                                <td>${u.fechaRegistro}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${u.esActivo}">
+                                            <span class="badge badge-activo">Activo</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="badge badge-inactivo">Inactivo</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <div class="acciones-tabla">
+                                        <form action="${pageContext.request.contextPath}/cambiarEstadoUsuario" method="post" style="display:inline;">
+                                            <input type="hidden" name="usuarioId" value="${u.id}">
+                                            <input type="hidden" name="activo" value="${!u.esActivo}">
+                                            <button type="submit" class="btn-deportivo-accion btn-sm ${u.esActivo ? 'btn-rojo' : 'btn-verde'}">
+                                                ${u.esActivo ? 'Desactivar' : 'Activar'}
+                                            </button>
+                                        </form>
+                                        <form action="${pageContext.request.contextPath}/eliminarUsuario" method="post" style="display:inline;"
+                                              onsubmit="return confirm('¿Eliminar este usuario?')">
+                                            <input type="hidden" name="usuarioId" value="${u.id}">
+                                            <button type="submit" class="btn-deportivo-accion btn-sm btn-rojo">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gris-texto);font-weight:700;">No hay usuarios registrados.</td></tr>
+                    </c:otherwise>
+                </c:choose>
+            </tbody>
+        </table>
+    </main>
+    <%@include file="/WEB-INF/fragmentos/footer.jspf" %>
+</div>
+</body>
+</html>

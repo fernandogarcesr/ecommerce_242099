@@ -1,0 +1,26 @@
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page pageEncoding="UTF-8" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
+
+<header class="header-tienda">
+    <div class="usuario-header">
+        <c:choose>
+            <c:when test="${empty sessionScope.usuarioActual}">
+                <a href="${pageContext.request.contextPath}/Login.jsp">Iniciar sesión</a>
+                <a href="${pageContext.request.contextPath}/Register.jsp">Registrarse</a>
+            </c:when>
+            <c:otherwise>
+                <span class="bienvenido">
+                    Hola, <strong>${sessionScope.usuarioActual.nombre}</strong>
+                </span>
+                <c:if test="${sessionScope.rol == 'ADMINISTRADOR'}">
+                    <a href="${pageContext.request.contextPath}/AdminPrincipal.jsp" class="link-admin">
+                        Panel Admin
+                    </a>
+                </c:if>
+                <a href="${pageContext.request.contextPath}/PerfilUsuarios.jsp">Mi perfil</a>
+                <a href="${pageContext.request.contextPath}/logout" class="link-salir">Cerrar sesion</a>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</header>

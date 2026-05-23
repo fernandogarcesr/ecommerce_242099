@@ -1,0 +1,28 @@
+<%@ page pageEncoding="UTF-8" %>
+<div class="seccion-filtros">
+    <form method="GET" action="Catalogo.jsp">
+        <h3>Filtrar Catalogo</h3>
+
+        <div class="input-bloque">
+            <label for="txt_productos">Nombre artículo</label>
+            <input type="text" name="txt_productos" id="txt_productos" class="input-campo">
+        </div>
+
+        <div class="input-bloque">
+            <label for="txt_precio">Precio base</label>
+            <input type="number" name="txt_precio" id="txt_precio" class="input-campo">
+        </div>
+
+        <div class="input-bloque">
+            <label style="text-transform: uppercase; font-weight: 600; font-size: 0.85rem; color: #334155; display:block; margin-bottom:0.5rem;">Rango de valor</label>
+            <label class="opcion-radio-deportiva">
+                <input type="radio" name="orden" value="Menor" checked> Menores al precio
+            </label>
+            <label class="opcion-radio-deportiva">
+                <input type="radio" name="orden" value="Mayor"> Mayores al precio
+            </label>
+        </div>
+
+        <button type="submit" class="btn-deportivo-accion" style="width: 100%;">Aplicar Filtros</button>
+    </form>
+</div>
