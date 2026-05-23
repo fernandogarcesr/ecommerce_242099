@@ -72,7 +72,7 @@ public class AgregarProducto extends HttpServlet {
             
             productoBO.agregarProducto(producto);
 
-            response.sendRedirect("AgregarProducto");
+            response.sendRedirect(request.getContextPath() + "/cargarproducto?vista=adminProducto");
             
         } catch (Exception ex) {
             Logger.getLogger(AgregarProducto.class.getName()).log(Level.SEVERE, null, ex);

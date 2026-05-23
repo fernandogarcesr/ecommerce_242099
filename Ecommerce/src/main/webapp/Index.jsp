@@ -25,7 +25,7 @@
         <div class="banner-bienvenida">
             <h2>Tu equipo.<br><span>Tu rendimiento.</span></h2>
             <p>Todo lo que necesitas para entrenar y competir en un solo lugar. Calidad deportiva garantizada.</p>
-            <a href="${pageContext.request.contextPath}/Catalogo.jsp" class="btn-deportivo-accion btn-naranja">
+            <a href="${pageContext.request.contextPath}/cargarproducto" class="btn-deportivo-accion btn-naranja">
                 Ver catalogo
             </a>
         </div>

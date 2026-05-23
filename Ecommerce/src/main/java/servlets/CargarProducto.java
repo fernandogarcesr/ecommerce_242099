@@ -1,20 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package servlets;
 
 import bos.ProductoBO;
+import bos.ReseniasBO;
 import dtos.ProductoDTO;
+import dtos.ReseñaDTO;
 import exception.ObtenerProductosException;
 import interfaces.IProductosBO;
+import interfaces.IReseniasBO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,31 +24,10 @@ import java.util.List;
 public class CargarProducto extends HttpServlet {
 
     IProductosBO productosBO = new ProductoBO();
+    private final IReseniasBO reseniasBO = new ReseniasBO();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CargarProducto</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CargarProducto at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -64,17 +42,63 @@ public class CargarProducto extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String idParam = request.getParameter("id");
+        String vista = request.getParameter("vista");
+
         try {
-            String vista = request.getParameter("vista");
-            System.out.println("Vista: " + vista);
+            // Si viene un id, cargamos ese producto específico
+            if (idParam != null && !idParam.isEmpty()) {
+                Long id = Long.parseLong(idParam);
+                // buscamos en la lista completa el DTO correspondiente
+                List<ProductoDTO> productos = productosBO.obtenerProductos();
+                ProductoDTO productoSeleccionado = null;
+                for (ProductoDTO p : productos) {
+                    if (p.getId().equals(id)) {
+                        productoSeleccionado = p;
+                        break;
+                    }
+                }
+
+                if (productoSeleccionado != null) {
+                    request.setAttribute("producto", productoSeleccionado);
+
+                    //filtrar reseñas
+                    List<ReseñaDTO> reseniasFiltradas = new ArrayList<>();
+
+                    try {
+                        List<ReseñaDTO> todasLasResenias = reseniasBO.obtenerResenias();
+
+                        // Filtramos las que pertenencen a este producto
+                        for (ReseñaDTO r : todasLasResenias) {
+                            if (r.getIdProducto() == id.longValue()) {
+                                reseniasFiltradas.add(r);
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error o no hay reseñas en la BD: " + e.getMessage());
+                    }
+                    request.setAttribute("listaResenias", reseniasFiltradas);
+                    request.getRequestDispatcher("/DetallesProducto.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/cargarproducto");
+                }
+                return;
+            }
+
+            // Cargar el inventario completo para Catálogo o Admin
             List<ProductoDTO> productos = productosBO.obtenerProductos();
-            request.setAttribute("listaProductos", productos);
 
             if ("adminProducto".equals(vista)) {
+                request.setAttribute("productos", productos); // Va al Admin con el parametro 'productos'
                 request.getRequestDispatcher("/AdminCatalogo.jsp").forward(request, response);
+            } else {
+                request.setAttribute("listaProductos", productos); // Va al Catalogo de clientes con 'listaProductos'
+                request.getRequestDispatcher("/Catalogo.jsp").forward(request, response);
             }
+
         } catch (ObtenerProductosException ex) {
-            request.setAttribute("mensaje", "Error: " + ex.getMessage());
+            request.setAttribute("mensaje", "Error al cargar productos " + ex.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
@@ -90,6 +114,7 @@ public class CargarProducto extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        doGet(request, response);
 
     }
 

@@ -1,5 +1,5 @@
 <%@ page pageEncoding="UTF-8" %>
 <%-- footer.jspf — pie de pagina obligatorio --%>
 <footer class="footer">
-    Aplicaciones Web &ndash; Unidad 2 &nbsp;|&nbsp; SportZone &mdash; Artículos Deportivos
+    <p>Aplicaciones Web - Unidad 2</p>
 </footer>

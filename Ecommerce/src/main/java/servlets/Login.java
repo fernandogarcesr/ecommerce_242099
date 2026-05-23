@@ -1,4 +1,3 @@
-
 package servlets;
 
 import bos.UsuariosBO;
@@ -13,8 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * Controlador encargado de procesar la autenticacion de usuarios.
- * Valida credenciales y distribuye el flujo según el rol asignado.
+ * Controlador encargado de procesar la autenticacion de usuarios. Valida
+ * credenciales y distribuye el flujo según el rol asignado.
+ *
  * @author Fernando Garces
  */
 @WebServlet(name = "Login", urlPatterns = {"/login"})
@@ -24,20 +24,23 @@ public class Login extends HttpServlet {
     private final IUsuariosBO usuariosBO = new UsuariosBO();
 
     /**
-     * Manda al usuario directo a la pantalla visual de Login si intenta acceder por GET.
+     * Manda al usuario directo a la pantalla visual de Login si intenta acceder
+     * por GET.
+     *
      * @param request
      * @param response
      * @throws jakarta.servlet.ServletException
      * @throws java.io.IOException
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.sendRedirect(request.getContextPath() + "/Login.jsp");
     }
 
     /**
      * Recibe los datos del formulario deportivo y valida el acceso.
+     *
      * @param request
      * @param response
      * @throws jakarta.servlet.ServletException
@@ -48,12 +51,18 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
 
         // Captura de los parámetros obligatorios del formulario
+        request.setCharacterEncoding("UTF-8");
         String correo = request.getParameter("correo");
-        String contrasenia = request.getParameter("contrasenia");
+        if (correo == null) correo = "";
+        correo = correo.trim().toLowerCase();
+        
+        String contraseniaPlana = request.getParameter("contrasenia");
+        if (contraseniaPlana == null) contraseniaPlana = "";
 
         try {
-            // Mandamos los datos a la capa de negocio para su validacion
-            UsuarioDTO usuario = usuariosBO.iniciarSesion(correo, contrasenia);
+
+            // Mandamos el Hash resultante a validar contra la base de datos
+            UsuarioDTO usuario = usuariosBO.iniciarSesion(correo, contraseniaPlana);
 
             // Si los datos estan mal, regresamos al login con un mensaje de advertencia
             if (usuario == null) {
@@ -72,7 +81,7 @@ public class Login extends HttpServlet {
             // Creamos o recuperamos la sesion HTTP del servidor
             HttpSession session = request.getSession(true);
             session.setAttribute("usuarioActual", usuario);
-            session.setAttribute("rol", usuario.getRol().name()); 
+            session.setAttribute("rol", usuario.getRol().name());
 
             // Redireccion estrategica dependiendo del nivel de acceso (Admin o Cliente)
             if ("ADMINISTRADOR".equals(usuario.getRol().name())) {

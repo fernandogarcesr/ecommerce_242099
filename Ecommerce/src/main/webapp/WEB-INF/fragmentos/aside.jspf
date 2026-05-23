@@ -1,4 +1,4 @@
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+    <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ page pageEncoding="UTF-8" %>
 <%-- aside.jspf — menu lateral de navegaciun --%>
 <aside class="sidebar-tienda">
@@ -18,7 +18,7 @@
             </a>
         </li>
         <li>
-            <a href="${pageContext.request.contextPath}/Catalogo.jsp">
+            <a href="${pageContext.request.contextPath}/cargarproducto">
                 ◫&nbsp; Catálogo
             </a>
         </li>
@@ -38,7 +38,7 @@
         <span class="sidebar-seccion">Administración</span>
         <ul class="menu-lista">
             <li>
-                <a href="${pageContext.request.contextPath}/AdminPrincipal.jsp">
+                <a href="${pageContext.request.contextPath}/cargarproducto?vista=adminProducto">
                     ⊟&nbsp; Panel admin
                 </a>
             </li>

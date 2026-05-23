@@ -50,7 +50,6 @@ html, body { height: 100%; }
         "sidebar content"
         "sidebar footer";
     min-height: 100vh;
-    height: 100%;
 }
 
 /* HEADER*/
@@ -167,7 +166,8 @@ html, body { height: 100%; }
     grid-area: content;
     padding: 2rem 2.2rem;
     background: var(--gris-fondo);
-    min-height: 0; /* evita overflow en grid */
+    min-height: 0; 
+    align-self: stretch;
 }
 
 /*FOOTER*/
@@ -192,6 +192,8 @@ html, body { height: 100%; }
     align-items: flex-start; 
     justify-content: center;
     padding-top: 2rem;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .caja-autenticacion {
@@ -839,3 +841,37 @@ html, body { height: 100%; }
     .detalle-producto-container { grid-template-columns: 1fr; }
     .grid-admin-cards { grid-template-columns: 1fr; }
 }
+
+/* Configuración del contenedor maestro */
+.contenedor-maestro {
+    display: grid;
+    grid-template-areas: 
+        "header header"
+        "aside  main"
+        "footer footer";
+    grid-template-rows: auto 1fr auto; 
+    grid-template-columns: 250px 1fr; 
+    min-height: 100vh;
+}
+
+header {
+    grid-area: header;
+}
+
+aside {
+    grid-area: aside;
+}
+
+main.contenido {
+    grid-area: main;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+footer {
+    grid-area: footer;
+    text-align: center;
+    padding: 15px;
+    background-color: #333;
+    color: white;
+}   
