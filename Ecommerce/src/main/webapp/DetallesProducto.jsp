@@ -29,7 +29,7 @@
 
             <div class="detalle-producto-container">
                 <div class="foto-producto-box">
-                    <img src="${pageContext.request.contextPath}/imgs/${producto.imagenUrl}" alt="${producto.nombre}">
+                    <img src="${pageContext.request.contextPath}/${producto.rutaImagen}" alt="${producto.nombre}">
                     <div style="font-size: 1.1rem; color: #e2b93b; font-weight: 700; margin-top: 0.5rem;">⭐⭐⭐⭐☆ 4.0</div>
                 </div>
 
@@ -44,8 +44,8 @@
                     </p>
 
                     <div style="background: #ffffff; padding: 1.2rem; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: auto;">
-                        <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;">Disponibilidad: <span style="color: ${producto.cantidadStock > 0 ? '#22c55e' : '#ef4444'};">${producto.cantidadStock > 0 ? 'En Stock' : 'Agotado'}</span></p>
-                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">Unidades en almacén: ${producto.cantidadStock}</p>
+                        <p style="font-weight: 700; margin-bottom: 0.5rem; font-size: 0.95rem;">Disponibilidad: <span style="color: ${producto.stock > 0 ? '#22c55e' : '#ef4444'};">${producto.stock > 0 ? 'En Stock' : 'Agotado'}</span></p>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">Unidades en almacén: ${producto.stock}</p>
                         <p style="font-size: 0.85rem; color: #475569; margin-bottom: 1.2rem; border-top: 1px solid #e2e8f0; padding-top: 0.5rem;"><strong>Especificaciones:</strong> Garantía original de SportsZone, materiales de alto rendimiento aptos para entrenamiento deportivo intensivo. </p>
                         
                         <div style="display: flex; gap: 10px;">
@@ -65,11 +65,11 @@
                             <c:forEach var="res" items="${requestScope.listaResenias}">
                                 <div class="resena-card" style="padding: 1rem; background: #f8fafc; border-radius: 6px; border-left: 3px solid #ff5200; margin-bottom: 0.5rem;">
                                     <div class="resena-header" style="display: flex; justify-content: space-between; align-items: center;">
-                                        <h4 class="resena-usuario" style="font-size: 0.95rem; font-weight: 700; color: #0f172a;">${res.nombreUsuario}</h4>
-                                        <span class="resena-fecha" style="font-size: 0.8rem; color: #64748b;">${res.fechaPublicacion}</span>
+                                        <h4 class="resena-usuario" style="font-size: 0.95rem; font-weight: 700; color: #0f172a;">${res.usuario.nombre}</h4>
+                                        <span class="resena-fecha" style="font-size: 0.8rem; color: #64748b;">${res.fecha}</span>
                                     </div>
                                     <div class="resena-estrellas" style="color: #e2b93b; margin: 0.2rem 0;">
-                                        Calificación: <strong>${res.calificacion} / 5 Estrellas</strong>
+                                        Calificación: <strong>${res.estrellas} / 5 Estrellas</strong>
                                     </div>
                                     <p class="resena-texto" style="color: #334155; font-size: 0.9rem; line-height: 1.5;">
                                         ${res.comentario}

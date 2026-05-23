@@ -39,10 +39,10 @@
                                     <tr>
                                         <td style="font-weight:800;">${p.nombre}</td>
                                         <td style="color:var(--naranja);font-weight:800;">$${p.precio}</td>
-                                        <td>${p.cantidadStock}</td>
+                                        <td>${p.stock}</td>
                                         <td>
                                             <div class="acciones-tabla">
-                                                <a href="${pageContext.request.contextPath}/cargarProducto?id=${p.id}&vista=editar"
+                                                <a href="${pageContext.request.contextPath}/cargarproducto?id=${p.id}&vista=editar"
                                                    class="btn-deportivo-accion btn-sm btn-azul">Editar</a>
                                                 <form action="${pageContext.request.contextPath}/borrarproducto" method="post" style="display:inline;"
                                                       onsubmit="return confirm('¿Eliminar este producto?')">

@@ -35,10 +35,10 @@
                                 <td style="font-weight:800;">${r.usuario.nombre}</td>
                                 <td>${r.producto.nombre}</td>
                                 <td style="color:var(--naranja);">
-                                    <c:forEach begin="1" end="${r.calificacion}" var="i">★</c:forEach>
+                                    <c:forEach begin="1" end="${r.estrellas}" var="i">★</c:forEach>
                                 </td>
                                 <td style="max-width:240px;font-size:.85rem;color:var(--gris-texto);">${r.comentario}</td>
-                                <td style="font-size:.82rem;">${r.fechaPublicacion}</td>
+                                <td style="font-size:.82rem;">${r.fecha}</td>
                                 <td>
                                     <form action="${pageContext.request.contextPath}/eliminarResenia" method="post"
                                           onsubmit="return confirm('¿Eliminar esta reseña?')">
