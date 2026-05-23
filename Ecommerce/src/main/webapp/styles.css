@@ -165,7 +165,10 @@ html, body { height: 100%; }
 .content {
     grid-area: content;
     padding: 2rem 2.2rem;
-    background: var(--gris-fondo);
+    background: url('imgs/main-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     min-height: 0; 
     align-self: stretch;
 }
@@ -326,6 +329,17 @@ html, body { height: 100%; }
     color: var(--negro);
 }
 
+.btn-regresar img {
+    max-width: 24px;
+    height: auto;
+    display: block;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+.btn-regresar img:hover {
+    opacity: 1;
+}
+
 /* 
    TABLAS
  */
@@ -366,6 +380,8 @@ html, body { height: 100%; }
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 
@@ -400,16 +416,7 @@ html, body { height: 100%; }
 }
 
 .banner-bienvenida::after {
-    content: 'SPORT';
-    position: absolute;
-    right: -10px; top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--fuente-titulo);
-    font-size: 9rem;
-    color: rgba(255,255,255,0.03);
-    letter-spacing: 4px;
-    pointer-events: none;
-    line-height: 1;
+    content: '';
 }
 
 .banner-bienvenida h2 {
@@ -875,3 +882,105 @@ footer {
     background-color: #333;
     color: white;
 }   
+
+.content {
+    background-image: url('imgs/main-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Titulos de pagina en blanco puro */
+.content .top-contenedor h1,
+.content h1,
+.content h2,
+.content h3,
+.content h4 {
+    color: #ffffff !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* Parrafos y texto general en blanco*/
+.content p,
+.content span,
+.content label,
+.content li,
+.content td,
+.content th {
+    color: #f1f5f9 !important;
+}
+
+/* Las tablas mantienen su fondo blanco propio para que sean legibles */
+.content .tabla-deportiva-global {
+    background: rgba(255, 255, 255, 0.97) !important;
+}
+
+.content .tabla-deportiva-global td,
+.content .tabla-deportiva-global th {
+    color: var(--negro) !important;
+    text-shadow: none !important;
+}
+
+.content .tabla-deportiva-global th {
+    background: var(--negro) !important;
+    color: #ffffff !important;
+}
+
+.content .caja-autenticacion,
+.content .caja-form,
+.content .detalle-producto-container,
+.content .caja-resumen,
+.content .confirmacion-box,
+.content .carrito-grid,
+.content .grid-checkout,
+.content .caja-filtros {
+    background: rgba(255, 255, 255, 0.97) !important;
+}
+
+.content .caja-autenticacion *,
+.content .caja-form *,
+.content .detalle-producto-container *,
+.content .caja-resumen *,
+.content .confirmacion-box *,
+.content .carrito-grid *,
+.content .grid-checkout *,
+.content .caja-filtros * {
+    color: var(--negro) !important;
+    text-shadow: none !important;
+}
+
+.content .caja-autenticacion .marca-naranja,
+.content .caja-form .marca-naranja,
+.content .precio-tag,
+.content .naranja-texto {
+    color: var(--naranja) !important;
+}
+
+.content .banner-bienvenida *,
+.content .banner-bienvenida h2,
+.content .banner-bienvenida p {
+    text-shadow: none !important;
+}
+
+.content .tarjeta-autor {
+    background: rgba(255, 255, 255, 0.92) !important;
+}
+
+.content .tarjeta-autor * {
+    color: var(--negro) !important;
+    text-shadow: none !important;
+}
+
+/* Filtros del catalogo */
+.content .caja-filtros label,
+.content .caja-filtros span,
+.content .caja-filtros h2 {
+    color: var(--negro) !important;
+    text-shadow: none !important;
+}
+
+.content [style*="color:var(--naranja)"],
+.content [style*="color: var(--naranja)"] {
+    color: var(--naranja) !important;
+    text-shadow: none !important;
+}

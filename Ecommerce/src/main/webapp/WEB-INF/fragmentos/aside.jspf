@@ -6,7 +6,7 @@
     <%-- logo dentro del sidebar, alineado con el header --%>
     <div class="sidebar-logo">
         <a href="${pageContext.request.contextPath}/Index.jsp" style="text-decoration:none;">
-            <span>Sport<em>Zone</em></span>
+            <span>Sports<em>Zone</em></span>
         </a>
     </div>
 
