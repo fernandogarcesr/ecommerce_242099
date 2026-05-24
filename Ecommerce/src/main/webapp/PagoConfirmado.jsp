@@ -33,10 +33,10 @@
 
                     <div class="grid-detalles">
                         <div class="detalle-etiqueta">N° de Pedido:</div>
-                        <div class="detalle-valor">#${requestScope.pedidoConfirmado.id}</div>
+                        <div class="detalle-valor">#${sessionScope.pedidoConfirmado.id}</div>
 
                         <div class="detalle-etiqueta">Fecha de Compra:</div>
-                        <div class="detalle-valor">${requestScope.pedidoConfirmado.fecha}</div>
+                        <div class="detalle-valor">${sessionScope.pedidoConfirmado.fecha}</div>
 
                         <div class="detalle-etiqueta">Dirección de Entrega:</div>
                         <div class="detalle-valor">${sessionScope.usuarioActual.direccion}</div>
@@ -45,7 +45,14 @@
                         <div class="detalle-valor">${sessionScope.usuarioActual.nombre}</div>
 
                         <div class="detalle-etiqueta">Método de Pago:</div>
-                        <div class="detalle-valor">${requestScope.pedidoConfirmado.metodoPago.tipo}</div>
+                        <div class="detalle-valor">
+                            <c:choose>
+                                <c:when test="${not empty sessionScope.pedidoConfirmado.metodoPago}">
+                                    ${sessionScope.pedidoConfirmado.metodoPago.tipo}
+                                </c:when>
+                                <c:otherwise>No especificado</c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
 
@@ -61,17 +68,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="item" items="${requestScope.pedidoConfirmado.detallesPedido}">
+                            <c:forEach var="item" items="${sessionScope.pedidoConfirmado.detallesPedido}">
                                 <tr>
                                     <td>${item.producto.nombre}</td>
                                     <td>${item.cantidad}</td>
-                                    <td>$${item.subtotal}</td>
+                                    <td>$${item.cantidad * item.producto.precio}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
                     <div style="text-align:right; font-weight:800; font-size:1.1rem; margin-top:1rem; color:var(--naranja);">
-                        TOTAL PAGADO: $${requestScope.pedidoConfirmado.total}
+                        TOTAL PAGADO: $${sessionScope.pedidoConfirmado.total}
                     </div>
 
                 </div>

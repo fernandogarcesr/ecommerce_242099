@@ -55,7 +55,7 @@ public class FinalizarPedido extends HttpServlet {
             PedidoDTO pedidoCreado = pedidosBO.crearPedido(
                 usuario.getId(),
                 tipoPago,
-                usuario.getDireccion()
+                    usuario.getDireccion()
             );
 
             // Vaciar el carrito despues de confirmar el pedido
@@ -65,8 +65,8 @@ public class FinalizarPedido extends HttpServlet {
             session.removeAttribute("carritoActual");
 
             // Pasar el pedido a la vista de confirmacion
-            request.setAttribute("pedidoConfirmado", pedidoCreado);
-            request.getRequestDispatcher("/PagoConfirmado.jsp").forward(request, response);
+            session.setAttribute("pedidoConfirmado", pedidoCreado);
+            response.sendRedirect(request.getContextPath() + "/PagoConfirmado.jsp");
 
         } catch (AgregarPedidoException e) {
             request.setAttribute("error", "No se pudo procesar el pedido: " + e.getMessage());

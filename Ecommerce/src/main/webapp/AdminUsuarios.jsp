@@ -47,10 +47,10 @@
                             <tr>
                                 <td style="font-weight:800;">${u.nombre}</td>
                                 <td style="color:var(--gris-texto);">${u.correo}</td>
-                                <td style="color:var(--gris-texto);font-size:0.85rem;">N/A</td>
+                                <td>N/A</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${u.esActivo}">
+                                        <c:when test="${u.esActivo != null and u.esActivo}">
                                             <span class="badge badge-activo">Activo</span>
                                         </c:when>
                                         <c:otherwise>
@@ -60,17 +60,23 @@
                                 </td>
                                 <td>
                                     <div class="acciones-tabla">
-                                        <form action="${pageContext.request.contextPath}/cambiarEstadoUsuario" method="post" style="display:inline;">
-                                            <input type="hidden" name="usuarioId" value="${u.id}">
-                                            <input type="hidden" name="activo" value="${!u.esActivo}">
-                                            <button type="submit" class="btn-deportivo-accion btn-sm ${u.esActivo ? 'btn-rojo' : 'btn-verde'}">
-                                                ${u.esActivo ? 'Desactivar' : 'Activar'}
+                                        <form action="${pageContext.request.contextPath}/administrar-usuarios" method="post" style="display:inline;">
+                                            <input type="hidden" name="accion" value="${u.esActivo != null and u.esActivo ? 'desactivar' : 'activar'}">
+                                            <input type="hidden" name="idUsuario" value="${u.id}">
+                                            <button type="submit" class="btn-deportivo-accion btn-sm ${u.esActivo != null and u.esActivo? 'btn-rojo' : 'btn-verde'}">
+                                                ${u.esActivo != null and u.esActivo? 'Desactivar' : 'Activar'}
                                             </button>
                                         </form>
-                                        <form action="${pageContext.request.contextPath}/eliminarUsuario" method="post" style="display:inline;"
-                                              onsubmit="return confirm('¿Eliminar este usuario?')">
-                                            <input type="hidden" name="usuarioId" value="${u.id}">
-                                            <button type="submit" class="btn-deportivo-accion btn-sm btn-rojo">Eliminar</button>
+                                        <form action="${pageContext.request.contextPath}/administrar-usuarios" method="post" style="display:inline;"
+                                              onsubmit="return confirm('¿Eliminar permanentemente este usuario?')">
+                                            <input type="hidden" name="accion" value="eliminar">
+                                            <input type="hidden" name="idUsuario" value="${u.id}">  
+                                            <button type="submit" class="btn-deportivo-accion btn-sm btn-rojo" <c:if test="${u.esActivo != null and u.esActivo}">
+                                                    disabled title="Desactiva el usuario primero"
+                                                    style="opacity:0.4; cursor:not-allowed;"
+                                                </c:if>>
+                                                Eliminar
+                                            </button>
                                         </form>
                                     </div>
                                 </td>

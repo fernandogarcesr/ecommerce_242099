@@ -1,4 +1,4 @@
-    /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @WebServlet(name = "AdministrarUsuarios", urlPatterns = {"/administrar-usuarios"})
 public class AdministrarUsuarios extends HttpServlet {
-    
+
     IUsuariosBO usuariosBO = new UsuariosBO();
 
     /**
@@ -43,7 +43,7 @@ public class AdministrarUsuarios extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdministrarUsuarios</title>");            
+            out.println("<title>Servlet AdministrarUsuarios</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet AdministrarUsuarios at " + request.getContextPath() + "</h1>");
@@ -95,10 +95,18 @@ public class AdministrarUsuarios extends HttpServlet {
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
         String idStr = request.getParameter("idUsuario");
-        
+
         try {
             Long id = Long.parseLong(idStr);
-            
+
+            // no permitir eliminar ni desactivar al admin
+            dtos.UsuarioDTO usuarioSesion = (dtos.UsuarioDTO) request.getSession(false).getAttribute("usuarioActual");
+            if (id.equals(usuarioSesion.getId())) {
+                request.setAttribute("mensajeError", "No puedes modificar ni eliminar tu propia cuenta de administrador.");
+                doGet(request, response);
+                return;
+            }
+
             if ("activar".equals(accion)) {
                 usuariosBO.activarUsuario(id);
             } else if ("desactivar".equals(accion)) {
@@ -106,12 +114,16 @@ public class AdministrarUsuarios extends HttpServlet {
             } else if ("eliminar".equals(accion)) {
                 usuariosBO.eliminarUsuario(id);
             }
-            
+            response.sendRedirect(request.getContextPath() + "/administrar-usuarios");
+
         } catch (AdministrarUsuarioException e) {
-            request.setAttribute("error", e.getMessage());
+            request.setAttribute("MensajeError", e.getMessage());
+            doGet(request, response);
+        } catch (Exception e) {
+            request.setAttribute("mensajeError", "Error inesperado: " + e.getMessage());
+            doGet(request, response);
         }
-        response.sendRedirect("administrar-usuarios");
-    
+
     }
 
     /**

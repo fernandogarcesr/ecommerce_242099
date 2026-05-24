@@ -17,7 +17,7 @@
         <div class="grid-container">
             <%@include  file="/WEB-INF/fragmentos/aside.jspf"%>
             <%@include file="/WEB-INF/fragmentos/header.jspf"%>
-           
+
             <main class="content">
                 <div class="top-contenedor">
                     <h1>Confirmación de Compra</h1>
@@ -67,33 +67,44 @@
 
                     <div class="pago-sidebar">
 
-                        <div class="metodos-pago-box">
-                            <h3>Método de Pago</h3>
-                            <div class="logos-grid">
-                                <div class="logo-tarjeta"><img src="${pageContext.request.contextPath}/imgs/VISA-Logo.png" alt="Visa"></div>
-                                <div class="logo-tarjeta" style="display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem;">
-                                    <span style="color:#EB001B;">Master</span><span style="color:#F79E1B;">card</span>
-                                </div>
-                                <div class="logo-tarjeta" style="display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem; color:#003087;">PayPal    </div>
-                            </div>
-                        </div>
+                        <form action="${pageContext.request.contextPath}/finalizarPedido" method="POST">
+                            <div class="metodos-pago-box">
+                                <h3>Método de Pago</h3>
+                                <div style="display:flex; flex-direction:column; gap:10px; margin-top:0.8rem;">
+                                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:600; color:var(--negro);">
+                                        <input type="radio" name="tipoPago" value="TARJETA" checked>
+                                        <img src="${pageContext.request.contextPath}/imgs/VISA-Logo.png" alt="Visa" style="height:24px; object-fit:contain;">
+                                        <span style="color:var(--negro);">Tarjeta de crédito/débito</span>
+                                    </label>
+                                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:600; color:var(--negro);">
+                                        <input type="radio" name="tipoPago" value="TRANSFERENCIA">
+                                        <span style="font-size:1.1rem;">🏦</span>
+                                        <span style="color:var(--negro);">Transferencia bancaria</span>
+                                    </label>
+                                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:600; color:var(--negro);">
+                                        <input type="radio" name="tipoPago" value="PAYPAL">
+                                        <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png"
+                                             alt="PayPal" style="height:24px; object-fit:contain;">
+                                        <span style="color:var(--negro);">PayPal</span>
+                                    </label>
 
-                        <div class="total-pago-box" style="margin-top:1rem;">
-                            <h3>Total a Pagar</h3>
-                            <div class="total-input" style="font-family:var(--fuente-titulo); font-size:2rem; color:var(--naranja); font-weight:800; margin:0.5rem 0;">
-                                $${sessionScope.carritoActual.total != null ? sessionScope.carritoActual.total : '0.00'}
+                                </div>
                             </div>
-                            <form action="${pageContext.request.contextPath}/finalizarPedido" method="POST">
-                                <input type="hidden" name="tipoPago" value="TARJETA">
+                            <div class="total-pago-box" style="margin-top:1rem;">
+                                <h3>Total a Pagar</h3>
+                                <div class="total-input" style="font-family:var(--fuente-titulo); font-size:2rem; color:var(--naranja); font-weight:800; margin:0.5rem 0;">
+                                    $${sessionScope.carritoActual.total != null ? sessionScope.carritoActual.total : '0.00'}
+                                </div>
                                 <button type="submit" class="btn-deportivo-accion btn-naranja" style="width:100%;">Confirmar Pago</button>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
 
                     </div>
+
+
                 </div>
             </main>
-
-            <%@include file="/WEB-INF/fragmentos/footer.jspf"%>                    
+            <%@include file="/WEB-INF/fragmentos/footer.jspf"%> 
         </div>
 
     </body>

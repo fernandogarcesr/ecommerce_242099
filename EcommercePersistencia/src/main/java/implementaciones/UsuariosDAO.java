@@ -158,10 +158,20 @@ public class UsuariosDAO implements IUsuariosDAO {
         EntityManager em = ManejadorConexiones.getEntityManager();
         try {
             em.getTransaction().begin();
+            em.createQuery(
+                    "DELETE FROM DetallesCarrito dc WHERE dc.carrito.usuario.id = :uid")
+                    .setParameter("uid", idUsuario)
+                    .executeUpdate();
+
+            em.createQuery(
+                    "DELETE FROM Carrito c WHERE c.usuario.id = :uid")
+                    .setParameter("uid", idUsuario)
+                    .executeUpdate();
             Usuario usuario = em.find(Usuario.class, idUsuario);
             if (usuario != null) {
                 em.remove(usuario);
             }
+
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {

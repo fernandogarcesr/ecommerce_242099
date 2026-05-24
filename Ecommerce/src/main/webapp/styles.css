@@ -273,7 +273,7 @@ html, body { height: 100%; }
     align-items: center;
     justify-content: center;
     gap: 6px;
-    background: var(--negro);
+    background: var(--naranja);
     color: #fff;
     border: none;
     padding: 0.68rem 1.4rem;
@@ -289,7 +289,7 @@ html, body { height: 100%; }
     white-space: nowrap;
 }
 
-.btn-deportivo-accion:hover { background: var(--naranja); }
+.btn-deportivo-accion:hover { background: #e04800;; }
 
 .btn-naranja { background: var(--naranja) !important; }
 .btn-naranja:hover { background: var(--naranja-dark) !important; }
@@ -1030,4 +1030,83 @@ footer {
 .content .resena-card span,
 .content .resena-fecha {
     color: #64748b !important;
+}
+
+.content .badge,
+.content span.badge {
+    color: inherit !important;
+    text-shadow: none !important;
+}
+.content .badge-pendiente  { background: #fff3e0 !important; color: #c2410c !important; }
+.content .badge-enviado    { background: #dbeafe !important; color: #1d4ed8 !important; }
+.content .badge-entregado  { background: #dcfce7 !important; color: #15803d !important; }
+.content .badge-activo     { background: #dcfce7 !important; color: #15803d !important; }
+.content .badge-inactivo   { background: #fee2e2 !important; color: #b91c1c !important; }
+
+.content td span[style*="background:#fef3f2"] { color: #b42318 !important; }
+.content td span[style*="background:#eff6ff"]  { color: #1d4ed8 !important; }
+.content td span[style*="background:#f0fdf4"]  { color: #166534 !important; }
+
+
+.btn-regresar {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-regresar img {
+    filter: brightness(0) invert(1) !important;
+    opacity: 1 !important;
+    max-width: 20px !important;
+}
+
+/* Total del carrito - color negro para que se lea sobre fondo blanco */
+#totalCarrito {
+    color: var(--naranja) !important;
+    font-size: 1.6rem !important;
+    font-weight: 800 !important;
+}
+
+/* resumen de orden y su contenido en el carrito */
+.content div[style*="background: #ffffff"] h3,
+.content div[style*="background: #ffffff"] span,
+.content div[style*="background: #ffffff"] p {
+    color: var(--negro) !important;
+    text-shadow: none !important;
+}
+
+/* PagoConfirmado - direccion y valores en color legible */
+.content .detalle-valor {
+    color: var(--negro) !important;
+    background: #f8fafc !important;
+    text-shadow: none !important;
+}
+.content .detalle-etiqueta {
+    color: #475569 !important;
+    text-shadow: none !important;
+}
+
+/* Mastercard texto en el proceso de pago */
+.content .logo-tarjeta span {
+    color: inherit !important;
+    text-shadow: none !important;
+}
+.content .logo-tarjeta span[style*="color:#EB001B"] { color: #EB001B !important; }
+.content .logo-tarjeta span[style*="color:#F79E1B"] { color: #F79E1B !important; }
+.content .logo-tarjeta span[style*="color:#003087"]  { color: #003087 !important; }
+
+/* Select de estado en AdminGestionPedidos */
+.content select {
+    color: var(--negro) !important;
+    background: #fff !important;
+}
+
+/* Radio buttons del metodo de pago */
+.content label input[type="radio"] + img,
+.content label[style*="color:var(--negro)"],
+.content label[style*="color: var(--negro)"] {
+    color: var(--negro) !important;
+    text-shadow: none !important;
 }

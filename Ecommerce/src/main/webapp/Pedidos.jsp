@@ -10,6 +10,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -45,8 +46,8 @@
                                     <tr>
                                         <td style="font-weight:700;color:#ff5200;">#${p.numeroPedido}</td>
                                         <td>${p.fechaHoraFormateada}</td>
-                                        <td style="font-weight:700;">$${p.total}</td>
-                                        <td>${p.metodoPago}</td>
+                                        <td style="font-weight:700;">$<fmt:formatNumber value="${p.total}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                                        <td style="font-weight:600;">${p.metodoPago.tipo}</td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${p.estado == 'PENDIENTE'}">

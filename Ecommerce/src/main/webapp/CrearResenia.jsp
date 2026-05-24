@@ -38,7 +38,7 @@
                 <div class="foto-producto-box">
                     <c:choose>
                         <c:when test="${not empty requestScope.producto}">
-                            <img src="${pageContext.request.contextPath}/${requestScope.producto.rutaImagen}"
+                            <img src="${pageContext.request.contextPath}/imgs/${requestScope.producto.rutaImagen}"
                                  alt="${requestScope.producto.nombre}" style="max-height:250px;">
                             <h3 style="margin-top:1rem;text-align:center;">${requestScope.producto.nombre}</h3>
                         </c:when>

@@ -14,7 +14,7 @@
     <%@include file="/WEB-INF/fragmentos/aside.jspf" %>
     <%@include file="/WEB-INF/fragmentos/header.jspf" %>
     <main class="content">
-        <a href="${pageContext.request.contextPath}/AdminCatalogo.jsp" class="btn-volver">← Volver al catálogo</a>
+        <a href="${pageContext.request.contextPath}/cargarproducto?vista=adminProducto" class="btn-volver">← Volver al catálogo</a>
         <div class="top-contenedor"><h1>Editar producto</h1></div>
         <div class="caja-form">
             <form action="${pageContext.request.contextPath}/EditarProducto" method="post" enctype="multipart/form-data">
