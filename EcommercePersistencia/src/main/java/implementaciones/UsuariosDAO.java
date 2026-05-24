@@ -1,5 +1,9 @@
 
 package implementaciones;
+import entidades.Carrito;
+import entidades.DetallesCarrito;
+import entidades.DetallesPedido;
+import entidades.Reseña;
 import entidades.MetodoPago;
 import entidades.Usuario;
 import exception.PersistenciaException;
@@ -72,33 +76,33 @@ public class UsuariosDAO implements IUsuariosDAO {
     public Usuario registrarUsuario(Usuario usuarioNuevo) throws PersistenciaException {
         EntityManager entityManager = ManejadorConexiones.getEntityManager();
 
-    try {
-        entityManager.getTransaction().begin();
+        try {
+            entityManager.getTransaction().begin();
 
-        // Hasheamos la contraseña de manera segura
-        usuarioNuevo.setContrasenia(encriptarContrasenia(usuarioNuevo.getContrasenia()));
-        
-        // Asignamos el estado activo y el rol predeterminado de CLIENTE
-        // para asegurar que al loguearse no sea rechazado por las validaciones.
-        if (usuarioNuevo.getEsActivo() == null) {
-            usuarioNuevo.setEsActivo(true);
-        }
-        if (usuarioNuevo.getRol() == null) {
-            usuarioNuevo.setRol(entidades.RolUsuario.CLIENTE);
-        }
+            // Hasheamos la contraseña de manera segura
+            usuarioNuevo.setContrasenia(encriptarContrasenia(usuarioNuevo.getContrasenia()));
 
-        entityManager.persist(usuarioNuevo);
-        entityManager.getTransaction().commit();
+            // Asignamos el estado activo y el rol predeterminado de CLIENTE
+            // para asegurar que al loguearse no sea rechazado por las validaciones.
+            if (usuarioNuevo.getEsActivo() == null) {
+                usuarioNuevo.setEsActivo(true);
+            }
+            if (usuarioNuevo.getRol() == null) {
+                usuarioNuevo.setRol(entidades.RolUsuario.CLIENTE);
+            }
 
-        return usuarioNuevo;
-    } catch (Exception e) {
-        if (entityManager.getTransaction().isActive()) {
-            entityManager.getTransaction().rollback();
+            entityManager.persist(usuarioNuevo);
+            entityManager.getTransaction().commit();
+
+            return usuarioNuevo;
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            throw new PersistenciaException("Error en la transacción al dar de alta al usuario: " + e.getMessage(), e);
+        } finally {
+            entityManager.close();
         }
-        throw new PersistenciaException("Error en la transacción al dar de alta al usuario: " + e.getMessage(), e);
-    } finally {
-        entityManager.close();
-    }
     }
 
     /**
@@ -111,7 +115,8 @@ public class UsuariosDAO implements IUsuariosDAO {
     }
 
     /**
-     * Auxiliar para transformar arreglos de bytes crudos a un formato legible hexadecimal.
+     * Auxiliar para transformar arreglos de bytes crudos a un formato legible
+     * hexadecimal.
      */
     private static String bytesAHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
@@ -157,75 +162,89 @@ public class UsuariosDAO implements IUsuariosDAO {
     @Override
     public void eliminarUsuario(Long idUsuario) throws PersistenciaException {
         EntityManager em = ManejadorConexiones.getEntityManager();
-        try {
-            em.getTransaction().begin();
+    try {
+        em.getTransaction().begin();
 
-            // borramos detalles del carrito
-            em.createQuery(
-                    "DELETE FROM DetallesCarrito dc WHERE dc.carrito.usuario.id = :uid")
-                    .setParameter("uid", idUsuario)
-                    .executeUpdate();
+        // reseñas del usuario
+        em.createQuery("DELETE FROM Reseña r WHERE r.usuario.id = :uid")
+          .setParameter("uid", idUsuario)
+          .executeUpdate();
+        em.flush();
 
-            // borramos el carrito
-            em.createQuery(
-                    "DELETE FROM Carrito c WHERE c.usuario.id = :uid")
-                    .setParameter("uid", idUsuario)
-                    .executeUpdate();
+        // detalles del carrito
+        em.createQuery(
+            "DELETE FROM DetallesCarrito dc WHERE dc.carrito.usuario.id = :uid")
+          .setParameter("uid", idUsuario)
+          .executeUpdate();
+        em.flush();
 
-            // borramos las reseñas del usuario
-            em.createQuery(
-                    "DELETE FROM Reseña r WHERE r.usuario.id = :uid")
-                    .setParameter("uid", idUsuario)
-                    .executeUpdate();
+        // carrito — usamos SQL  para poner id_usuario=NULL primero
+        // asi evitamos la FK hacia usuarios al borrar el carrito
+        em.createNativeQuery(
+            "UPDATE carritos SET id_usuario = NULL WHERE id_usuario = ?")
+          .setParameter(1, idUsuario)
+          .executeUpdate();
+        em.flush();
 
-            // borramos los detalles de pedido
-            em.createQuery(
-                    "DELETE FROM DetallesPedido dp WHERE dp.pedido.usuario.id = :uid")
-                    .setParameter("uid", idUsuario)
-                    .executeUpdate();
+        em.createNativeQuery(
+            "DELETE FROM carritos WHERE id_usuario IS NULL AND id_carrito NOT IN " +
+            "(SELECT DISTINCT dc.id_carrito FROM detalles_carrito dc)")
+          .executeUpdate();
+        em.flush();
 
-            // MetodoPago no tiene FK a Pedido, lo borramos manualmente
-            // obtenemos los ids de los pedidos del usuario y borramos su MetodoPago
-            List<Long> idsPedidos = em.createQuery(
-                    "SELECT p.id FROM Pedido p WHERE p.usuario.id = :uid", Long.class)
-                    .setParameter("uid", idUsuario)
-                    .getResultList();
+        em.createNativeQuery(
+            "DELETE FROM carritos WHERE total = 0 OR id_usuario IS NULL")
+          .executeUpdate();
+        em.flush();
 
-            for (Long idPedido : idsPedidos) {
-                // buscamos el pedido para obtener su metodoPago
-                entidades.Pedido pedido = em.find(entidades.Pedido.class, idPedido);
-                if (pedido != null && pedido.getMetodoPago() != null) {
-                    // desvinculamos antes de borrar
-                    MetodoPago mp = em.find(MetodoPago.class, pedido.getMetodoPago().getId());
-                    pedido.setMetodoPago(null);
-                    em.merge(pedido);
-                    if (mp != null) {
-                        em.remove(mp);
-                    }
-                }
+        // detalles de pedido del usuario
+        em.createQuery(
+            "DELETE FROM DetallesPedido dp WHERE dp.pedido.usuario.id = :uid")
+          .setParameter("uid", idUsuario)
+          .executeUpdate();
+        em.flush();
+
+        // pedidos — usamos SQL para poder borrar aunque id_metodo_pago sea NOT NULL
+        //  primero obtenemos los ids de metodo_pago asociados
+        List<Object> idsMp = em.createNativeQuery(
+            "SELECT id_metodo_pago FROM pedidos WHERE id_usuario = ?")
+          .setParameter(1, idUsuario)
+          .getResultList();
+
+        // borramos los pedidos con SQL
+        em.createNativeQuery(
+            "DELETE FROM pedidos WHERE id_usuario = ?")
+          .setParameter(1, idUsuario)
+          .executeUpdate();
+        em.flush();
+
+        //ahora borramos los metodos de pago (ya sin FK que los referencie)
+        for (Object mpId : idsMp) {
+            if (mpId != null) {
+                em.createNativeQuery(
+                    "DELETE FROM metodo_pago WHERE id_metodo_pago = ?")
+                  .setParameter(1, mpId)
+                  .executeUpdate();
             }
-
-            //ahora borramos los pedidos
-            em.createQuery(
-                    "DELETE FROM Pedido p WHERE p.usuario.id = :uid")
-                    .setParameter("uid", idUsuario)
-                    .executeUpdate();
-
-            //finalmente eliminamos al usuario
-            Usuario usuario = em.find(Usuario.class, idUsuario);
-            if (usuario != null) {
-                em.remove(usuario);
-            }
-
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw new PersistenciaException("Error al remover el registro de usuario", e);
-        } finally {
-            em.close();
         }
+        em.flush();
+
+        // finalmente eliminamos al usuario
+        em.createNativeQuery(
+            "DELETE FROM usuarios WHERE id_usuario = ?")
+          .setParameter(1, idUsuario)
+          .executeUpdate();
+
+        em.getTransaction().commit();
+
+    } catch (Exception e) {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
+        throw new PersistenciaException("Error al remover el registro de usuario", e);
+    } finally {
+        em.close();
+    }
     }
 
     @Override
