@@ -83,6 +83,19 @@ public class Login extends HttpServlet {
             session.setAttribute("usuarioActual", usuario);
             session.setAttribute("rol", usuario.getRol().name());
 
+            // Generar JWT y guardarlo en cookie HttpOnly
+            String token = utils.JWTUtil.generarToken(
+                    usuario.getId(),
+                    usuario.getCorreo(),
+                    usuario.getRol().name()
+            );
+            jakarta.servlet.http.Cookie jwtCookie = new jakarta.servlet.http.Cookie("jwt_token", token);
+            jwtCookie.setHttpOnly(true); 
+            jwtCookie.setPath("/");
+            jwtCookie.setMaxAge(8 * 60 * 60); // 8 horas
+            response.addCookie(jwtCookie);
+            session.setAttribute("jwtToken", token);
+
             // Redireccion estrategica dependiendo del nivel de acceso (Admin o Cliente)
             if ("ADMINISTRADOR".equals(usuario.getRol().name())) {
                 response.sendRedirect(request.getContextPath() + "/AdminPrincipal.jsp");

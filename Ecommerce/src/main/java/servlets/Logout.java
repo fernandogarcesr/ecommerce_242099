@@ -33,6 +33,14 @@ public class Logout extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getSession().invalidate();
+
+        // Eliminar la cookie JWT
+        jakarta.servlet.http.Cookie jwtCookie = new jakarta.servlet.http.Cookie("jwt_token", "");
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(0); // Expira inmediatamente
+        response.addCookie(jwtCookie);
+
         response.sendRedirect("Login.jsp");
     }
 
