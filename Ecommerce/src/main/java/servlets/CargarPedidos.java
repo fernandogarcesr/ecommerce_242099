@@ -6,6 +6,7 @@ package servlets;
 
 import bos.PedidosBO;
 import dtos.PedidoDTO;
+import dtos.UsuarioDTO;
 import exception.ObtenerPedidoException;
 import interfaces.IPedidosBO;
 import java.io.IOException;
@@ -15,9 +16,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -67,9 +67,25 @@ public class CargarPedidos extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            HttpSession session = request.getSession(false);
+        UsuarioDTO usuario = (session != null) ? (UsuarioDTO) session.getAttribute("usuarioActual") : null;
+        String rol = (session != null) ? (String) session.getAttribute("rol") : null;
+
+        if ("ADMINISTRADOR".equals(rol)) {
+            // Admin ve todos los pedidos
             List<PedidoDTO> pedidos = pedidosBO.obtenerTodosPedidos();
             request.setAttribute("listaPedidos", pedidos);
             request.getRequestDispatcher("/AdminGestionPedidos.jsp").forward(request, response);
+        } else {
+            // Cliente ve solo sus pedidos
+            if (usuario == null) {
+                response.sendRedirect(request.getContextPath() + "/Login.jsp");
+                return;
+            }
+            List<PedidoDTO> pedidos = pedidosBO.obtenerPedidosPorUsuario(usuario.getId());
+            request.setAttribute("listaPedidos", pedidos);
+            request.getRequestDispatcher("/Pedidos.jsp").forward(request, response);
+        }
         } catch (ObtenerPedidoException ex) {
             request.setAttribute("mensaje", "Error: " + ex.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);

@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *Servlet used to modify an order and it´s status
  * @author Fernando Garces
  */
-@WebServlet(name = "ActualizarEstadoPedido", urlPatterns = {"/modificar_pedido"})
+@WebServlet(name = "ActualizarEstadoPedido", urlPatterns = {"/modificar_pedido", "/actualizarEstadoPedido"})
 public class ActualizarEstadoPedido extends HttpServlet {
 
     IPedidosBO pedidosBO = new PedidosBO();
@@ -81,7 +81,7 @@ public class ActualizarEstadoPedido extends HttpServlet {
             
             request.setAttribute("pedidoIndividual", pedido);
             
-            request.getRequestDispatcher("/administrarPedidoIndividual.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/cargarpedidos");
             
         } catch (NumberFormatException ex) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de pedido inválido.");
@@ -105,6 +105,7 @@ public class ActualizarEstadoPedido extends HttpServlet {
             throws ServletException, IOException {
         String idPedidoStr = request.getParameter("idPedido"); // Debe ser un campo oculto en el formulario
         String estadoStr = request.getParameter("estado-pedido");
+        if (estadoStr == null) estadoStr = request.getParameter("estado-pedido");
 
         try {
             if (idPedidoStr == null || estadoStr == null) {

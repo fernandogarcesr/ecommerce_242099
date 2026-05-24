@@ -67,18 +67,16 @@ public class EliminarResenia extends HttpServlet {
         String idStr = request.getParameter("id");
 
         if (idStr == null || idStr.isEmpty()) {
-            response.sendRedirect("AdministrarResenias");
+            response.sendRedirect(request.getContextPath() + "/AdministrarResenias");
             return;
         }
 
         try {
             long id = Long.parseLong(idStr);
             reseniasBO.eliminarResenia(id);
-
-            request.getRequestDispatcher("AdministrarResenias").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/AdministrarResenias");
         } catch (EliminarReseñaException e) {
-            Logger.getLogger(EditarProducto.class.getName()).log(Level.SEVERE, "Error al eliminar la reseña", e);
-            response.sendRedirect("error.jsp");
+            response.sendRedirect(request.getContextPath() + "/error.jsp");
         }
     }
 

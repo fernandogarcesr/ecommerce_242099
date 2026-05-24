@@ -28,16 +28,16 @@
             </thead>
             <tbody>
                 <c:choose>
-                    <c:when test="${not empty requestScope.pedidos}">
-                        <c:forEach var="p" items="${requestScope.pedidos}">
+                    <c:when test="${not empty requestScope.listaPedidos}">
+                        <c:forEach var="p" items="${requestScope.listaPedidos}">
                             <tr>
                                 <td style="font-weight:800;">#${p.id}</td>
                                 <td style="color:var(--gris-texto);">${p.usuario.correo}</td>
                                 <td style="color:var(--naranja);font-weight:800;">$${p.total}</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${p.estadoPedido.name() == 'PENDIENTE'}"><span class="badge badge-pendiente">Pendiente</span></c:when>
-                                        <c:when test="${p.estadoPedido.name() == 'ENVIADO'}"><span class="badge badge-enviado">Enviado</span></c:when>
+                                        <c:when test="${p.estado == 'PENDIENTE'}"><span class="badge badge-pendiente">Pendiente</span></c:when>
+                                        <c:when test="${p.estado == 'ENVIADO'}"><span class="badge badge-enviado">Enviado</span></c:when>
                                         <c:otherwise><span class="badge badge-entregado">Entregado</span></c:otherwise>
                                     </c:choose>
                                 </td>

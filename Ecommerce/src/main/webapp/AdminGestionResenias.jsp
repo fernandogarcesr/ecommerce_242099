@@ -29,11 +29,11 @@
             </thead>
             <tbody>
                 <c:choose>
-                    <c:when test="${not empty requestScope.resenias}">
-                        <c:forEach var="r" items="${requestScope.resenias}">
+                    <c:when test="${not empty requestScope.listaResenias}">
+                        <c:forEach var="r" items="${requestScope.listaResenias}">
                             <tr>
                                 <td style="font-weight:800;">${r.usuario.nombre}</td>
-                                <td>${r.producto.nombre}</td>
+                                <td>${requestScope.nombresProductos[r.idProducto]}</td>
                                 <td style="color:var(--naranja);">
                                     <c:forEach begin="1" end="${r.estrellas}" var="i">★</c:forEach>
                                 </td>

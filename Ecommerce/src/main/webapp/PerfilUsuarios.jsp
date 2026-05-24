@@ -25,7 +25,7 @@
                         <h1 style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase;">Información de Cuenta</h1>
                     </div>
 
-                    <form action="editar_perfil" method="POST">
+                    <form action="${pageContext.request.contextPath}/editarPerfil" method="POST">
                         <div class="input-bloque">
                             <label for="txt_nombre">Nombre Completo</label>
                             <input type="text" id="txt_nombre" name="nombre" class="input-campo" value="${sessionScope.usuarioActual.nombre}">

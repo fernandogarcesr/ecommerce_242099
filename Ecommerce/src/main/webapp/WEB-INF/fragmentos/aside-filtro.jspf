@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
 <div class="seccion-filtros">
-    <form method="GET" action="Catalogo.jsp">
+    <form method="GET" action="${pageContext.request.contextPath}/cargarproducto">
         <h3>Filtrar Catalogo</h3>
 
         <div class="input-bloque">

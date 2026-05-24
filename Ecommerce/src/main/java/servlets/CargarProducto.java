@@ -90,7 +90,7 @@ public class CargarProducto extends HttpServlet {
             List<ProductoDTO> productos = productosBO.obtenerProductos();
 
             if ("adminProducto".equals(vista)) {
-                request.setAttribute("productos", productos); // Va al Admin con el parametro 'productos'
+                request.setAttribute("listaProductos", productos);
                 request.getRequestDispatcher("/AdminCatalogo.jsp").forward(request, response);
             } else {
                 request.setAttribute("listaProductos", productos); // Va al Catalogo de clientes con 'listaProductos'

@@ -48,15 +48,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach var="item" items="${sessionScope.carritoActual.items}">
+                                <c:forEach var="item" items="${sessionScope.carritoActual.detallesCarrito}">
                                     <tr>
-                                        <td><strong>${item.nombreProducto}</strong></td>
-                                        <td>$${item.precioUnitario}</td>
-                                        <td>${item.cantidad}</td>
-                                        <td style="color:var(--naranja); font-weight:800;">$${item.subtotal}</td>
+                                        <td><strong>${item.producto.nombre}</strong></td>
+                                        <td>$${item.producto.precio}</td>
+                                        <td>${item.cantidadProductos}</td>
+                                        <td style="color:var(--naranja); font-weight:800;">$${item.cantidadProductos * item.producto.precio}</td>
                                     </tr>
                                 </c:forEach>
-                                <c:if test="${empty sessionScope.carritoActual.items}">
+                                <c:if test="${empty sessionScope.carritoActual.detallesCarrito}">
                                     <tr>
                                         <td colspan="4" style="text-align:center;">Tu carrito está vacío.</td>
                                     </tr>
@@ -70,7 +70,7 @@
                         <div class="metodos-pago-box">
                             <h3>Método de Pago</h3>
                             <div class="logos-grid">
-                                <div class="logo-tarjeta"><img src=""${pageContext.request.contextPath}/imgs/VISA-Logo.png" alt="Visa"></div>
+                                <div class="logo-tarjeta"><img src="${pageContext.request.contextPath}/imgs/VISA-Logo.png" alt="Visa"></div>
                                 <div class="logo-tarjeta" style="display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem;">
                                     <span style="color:#EB001B;">Master</span><span style="color:#F79E1B;">card</span>
                                 </div>
@@ -84,6 +84,7 @@
                                 $${sessionScope.carritoActual.total != null ? sessionScope.carritoActual.total : '0.00'}
                             </div>
                             <form action="${pageContext.request.contextPath}/finalizarPedido" method="POST">
+                                <input type="hidden" name="tipoPago" value="TARJETA">
                                 <button type="submit" class="btn-deportivo-accion btn-naranja" style="width:100%;">Confirmar Pago</button>
                             </form>
                         </div>

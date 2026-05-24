@@ -21,37 +21,29 @@ public class FiltroAutorización implements Filter {
         "Index.jsp",
         "Login.jsp",
         "login",
-        "Carrito.jsp",
         "Catalogo.jsp",
-        "CrearResenia.jsp",
         "DetallesProducto.jsp",
-        "PagoConfirmado.jsp",
-        "Pedidos.jsp",
-        "PerfilUsuarios.jsp",
-        "ProcesoPago.jsp",
         "Register.jsp",
-        "cargarproducto",      
-        "EditarProducto",       
-        "borrarproducto",      
-        "AdminCatalogo.jsp",  
-        "AdminEditarProducto.jsp",
         "registraUsuario",
-        "agregarCarrito" 
-    };
+        "cargarproducto",};
 
     String[] paginasAdmin = {
         "AdminCatalogo.jsp",
-        "AdminCrearProductos.jsp",
-        "AdminEditarProductos.jsp",
+        "AdminCrearProducto.jsp",
+        "AdminEditarProducto.jsp",
         "AdminGestionPedidos.jsp",
-        "AdminGestionarResenias.jsp",
+        "AdminGestionResenias.jsp",
         "AdminPrincipal.jsp",
         "AdminUsuarios.jsp",
         "AgregarProducto",
+        "EditarProducto",
+        "borrarproducto",
         "cargarpedidos",
         "modificar_pedido",
-    };
-        
+        "AdministrarResenias",
+        "eliminarResenia",
+        "actualizarEstadoPedido",};
+
 
     private String getPathSolicitado(HttpServletRequest request) {
         String uriSolicitada = request.getRequestURI();
