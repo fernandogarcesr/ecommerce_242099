@@ -1,13 +1,16 @@
 package bos;
 
+import dtos.DisponibilidadDTO;
 import dtos.EstadoPedidoDTO;
 import dtos.PedidoDTO;
+import dtos.ProductoDTO;
 import entidades.Carrito;
 import entidades.DetallesCarrito;
 import entidades.DetallesPedido;
 import entidades.EstadoPedido;
 import entidades.MetodoPago;
 import entidades.Pedido;
+import entidades.Producto;
 import entidades.TipoMetodoPago;
 import exception.AgregarPedidoException;
 import exception.CambiarEstadoException;
@@ -16,6 +19,7 @@ import exception.ObtenerPedidoException;
 import exception.PersistenciaException;
 import implementaciones.CarritosDAO;
 import implementaciones.PedidosDAO;
+import implementaciones.ProductoDAO;
 import implementaciones.UsuariosDAO;
 import interfaces.ICarritosDAO;
 import interfaces.IPedidosBO;
@@ -40,6 +44,7 @@ public class PedidosBO implements IPedidosBO {
     IPedidosDAO pedidoDAO;
     ICarritosDAO carritosDAO;
     IUsuariosDAO usuariosDAO;
+    private final ProductoDAO productosDAO = new ProductoDAO();
 
     public PedidosBO() {
         this.pedidoDAO = new PedidosDAO();
@@ -151,6 +156,26 @@ public class PedidosBO implements IPedidosBO {
                 detallesPedido.add(dp);
             }
             pedido.setDetallesPedido(detallesPedido);
+            // descontar el stock de cada producto comprado
+            for (DetallesCarrito dc : carrito.getDetallesCarrito()) {
+                Producto prod = dc.getProducto();
+                int nuevoStock = prod.getStock() - dc.getCantidadProducto();
+                if (nuevoStock < 0) {
+                    nuevoStock = 0;
+                }
+                ProductoDTO dtoActualizado = new ProductoDTO(
+                        prod.getId(),
+                        prod.getNombre(),
+                        prod.getPrecio(),
+                        nuevoStock,
+                        prod.getDescripcion(),
+                        nuevoStock == 0 ? DisponibilidadDTO.NO_DISPONIBLE : DisponibilidadDTO.DISPONIBLE,
+                        prod.getDescripcion(),
+                        prod.getRutaImagen()
+                );
+               
+                productosDAO.editarProducto(prod.getId(), dtoActualizado);
+            }
 
             pedidoDAO.agregarPedido(pedido);
 

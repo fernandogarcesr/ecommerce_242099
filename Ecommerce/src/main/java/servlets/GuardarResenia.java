@@ -1,6 +1,10 @@
 
 package servlets;
 
+import bos.ProductoBO;
+import dtos.ProductoDTO;
+import interfaces.IProductosBO;
+import java.util.List;
 import bos.ReseniasBO;
 import dtos.ReseñaDTO;
 import dtos.UsuarioDTO;
@@ -61,9 +65,33 @@ public class GuardarResenia extends HttpServlet {
 
         } catch (ReseniaException e) {
             request.setAttribute("error", "No se pudo guardar la reseña: " + e.getMessage());
+            try {
+                Long idProd = Long.parseLong(request.getParameter("idProducto"));
+                IProductosBO pBO = new ProductoBO();
+                List<ProductoDTO> todos = pBO.obtenerProductos();
+                for (ProductoDTO p : todos) {
+                    if (p.getId().equals(idProd)) {
+                        request.setAttribute("producto", p);
+                        break;
+                    }
+                }
+            } catch (Exception ignore) {
+            }
             request.getRequestDispatcher("/CrearResenia.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("error", "Error inesperado: " + e.getMessage());
+            try {
+                Long idProd = Long.parseLong(request.getParameter("idProducto"));
+                IProductosBO pBO = new ProductoBO();
+                List<ProductoDTO> todos = pBO.obtenerProductos();
+                for (ProductoDTO p : todos) {
+                    if (p.getId().equals(idProd)) {
+                        request.setAttribute("producto", p);
+                        break;
+                    }
+                }
+            } catch (Exception ignore) {
+            }
             request.getRequestDispatcher("/CrearResenia.jsp").forward(request, response);
         }
     }

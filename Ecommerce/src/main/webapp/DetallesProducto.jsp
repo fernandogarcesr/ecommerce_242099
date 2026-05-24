@@ -16,8 +16,8 @@
 </head>
 <body>
     <div class="grid-container">
-        <%@include file="/WEB-INF/fragmentos/header.jspf" %>
         <%@include file="/WEB-INF/fragmentos/aside.jspf" %>
+        <%@include file="/WEB-INF/fragmentos/header.jspf" %>
 
         <main class="content">
             <div class="top-contenedor">
@@ -29,7 +29,7 @@
 
             <div class="detalle-producto-container">
                 <div class="foto-producto-box">
-                    <img src="${pageContext.request.contextPath}/imgs/${producto.rutaImagen}" alt="${producto.nombre}" onerror="this.src='${pageContext.request.contextPath}/imgs/prod-shoes.jpg'">
+                    <img src="${pageContext.request.contextPath}/${producto.rutaImagen}" alt="${producto.nombre}" onerror="this.src='${pageContext.request.contextPath}/imgs/prod-shoes.jpg'">
                     <div style="font-size: 1.1rem; color: #e2b93b; font-weight: 700; margin-top: 0.5rem;">⭐⭐⭐⭐☆ 4.0</div>
                 </div>
 

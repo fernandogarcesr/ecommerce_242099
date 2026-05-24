@@ -26,7 +26,7 @@ import java.util.List;
 @WebServlet(name = "CargarPedidos", urlPatterns = {"/cargarpedidos"})
 public class CargarPedidos extends HttpServlet {
 
-    IPedidosBO pedidosBO = new PedidosBO();
+    private final IPedidosBO pedidosBO = new PedidosBO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -66,30 +66,36 @@ public class CargarPedidos extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            HttpSession session = request.getSession(false);
-        UsuarioDTO usuario = (session != null) ? (UsuarioDTO) session.getAttribute("usuarioActual") : null;
-        String rol = (session != null) ? (String) session.getAttribute("rol") : null;
+        HttpSession session = request.getSession(false);
+        UsuarioDTO usuario = (session != null)
+                ? (UsuarioDTO) session.getAttribute("usuarioActual") : null;
+        String rol = (session != null)
+                ? (String) session.getAttribute("rol") : null;
 
-        if ("ADMINISTRADOR".equals(rol)) {
-            // Admin ve todos los pedidos
-            List<PedidoDTO> pedidos = pedidosBO.obtenerTodosPedidos();
-            request.setAttribute("listaPedidos", pedidos);
-            request.getRequestDispatcher("/AdminGestionPedidos.jsp").forward(request, response);
-        } else {
-            // Cliente ve solo sus pedidos
-            if (usuario == null) {
-                response.sendRedirect(request.getContextPath() + "/Login.jsp");
-                return;
+        try {
+            if ("ADMINISTRADOR".equals(rol)) {
+                // El admin ve todos los pedidos de la plataforma
+                List<PedidoDTO> pedidos = pedidosBO.obtenerTodosPedidos();
+                request.setAttribute("listaPedidos", pedidos);
+                request.getRequestDispatcher("/AdminGestionPedidos.jsp")
+                       .forward(request, response);
+            } else {
+                // Cliente sin sesion va al login
+                if (usuario == null) {
+                    response.sendRedirect(request.getContextPath() + "/Login.jsp");
+                    return;
+                }
+                List<PedidoDTO> pedidos = pedidosBO.obtenerPedidosPorUsuario(usuario.getId());
+                request.setAttribute("listaPedidos", pedidos);
+                request.getRequestDispatcher("/Pedidos.jsp")
+                       .forward(request, response);
             }
-            List<PedidoDTO> pedidos = pedidosBO.obtenerPedidosPorUsuario(usuario.getId());
-            request.setAttribute("listaPedidos", pedidos);
+        } catch (ObtenerPedidoException ex) {
+            request.setAttribute("listaPedidos", null);
+            request.setAttribute("error", "No se pudo cargar el historial: " + ex.getMessage());
             request.getRequestDispatcher("/Pedidos.jsp").forward(request, response);
         }
-        } catch (ObtenerPedidoException ex) {
-            request.setAttribute("mensaje", "Error: " + ex.getMessage());
-            request.getRequestDispatcher("/error.jsp").forward(request, response);
-        }
+        
     }
 
     /**
@@ -103,7 +109,7 @@ public class CargarPedidos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

@@ -20,92 +20,102 @@
 
             <main class="content">
                 <div class="top-contenedor">
+                    <a href="${pageContext.request.contextPath}/CargarCarrito" class="btn-regresar">← Carrito</a>
                     <h1>Confirmación de Compra</h1>
                 </div>
+
+                <c:if test="${not empty requestScope.error}">
+                    <div class="alerta-error">${requestScope.error}</div>
+                </c:if>
 
                 <div class="envio-info-container">
                     <div class="datos-envio">
                         <p>Enviar a <strong>${sessionScope.usuarioActual.nombre}</strong></p>
-                        <a href="#" class="enlace-direccion">${sessionScope.usuarioActual.direccion}</a>
+                        <a href="${pageContext.request.contextPath}/PerfilUsuarios.jsp">${sessionScope.usuarioActual.direccion}</a>
                     </div>
                     <div class="fecha-llegada">
                         <p>Entregada estimada: <strong>Proximos 3-5 dias habiles</strong></p>
                     </div>
                 </div>
 
-                <div class="grid-carrito" style="margin-top: 1.5rem;">
+                <%-- Todo el checkout en un solo form --%>
+                <form action="${pageContext.request.contextPath}/finalizarPedido" method="POST">
+                    <div style="display:grid; grid-template-columns:1fr 300px; gap:1.8rem; align-items:flex-start;">
 
-                    <div class="pago-productos-box" style="background:#fff; padding:1.5rem; border-radius:8px; border:1px solid var(--gris-borde);">
-                        <h3>Resumen de Productos</h3>
-                        <br>
-                        <table class="tabla-deportiva-global">
-                            <thead>
-                                <tr>
-                                    <th>Artículo</th>
-                                    <th>Precio</th>
-                                    <th>Cantidad</th>
-                                    <th>Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="item" items="${sessionScope.carritoActual.detallesCarrito}">
+                        <div class="pago-productos-box">
+                            <h3>Artículos en tu pedido</h3>
+                            <table class="tabla-deportiva-global" style="margin-top:.8rem;">
+                                <thead>
                                     <tr>
-                                        <td><strong>${item.producto.nombre}</strong></td>
-                                        <td>$${item.producto.precio}</td>
-                                        <td>${item.cantidadProductos}</td>
-                                        <td style="color:var(--naranja); font-weight:800;">$${item.cantidadProductos * item.producto.precio}</td>
+                                        <th>Artículo</th>
+                                        <th style="text-align:center;">Cant.</th>
+                                        <th style="text-align:right;">Subtotal</th>
                                     </tr>
-                                </c:forEach>
-                                <c:if test="${empty sessionScope.carritoActual.detallesCarrito}">
-                                    <tr>
-                                        <td colspan="4" style="text-align:center;">Tu carrito está vacío.</td>
-                                    </tr>
-                                </c:if>
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="item" items="${sessionScope.carritoActual.detallesCarrito}">
+                                        <tr>
+                                            <td><strong>${item.producto.nombre}</strong></td>
+                                            <td style="text-align:center;">${item.cantidadProductos}</td>
+                                            <td style="text-align:right;color:var(--naranja);font-weight:800;">
+                                                $${item.cantidadProductos * item.producto.precio}
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:if test="${empty sessionScope.carritoActual.detallesCarrito}">
+                                        <tr>
+                                            <td colspan="3" style="text-align:center;color:var(--gris-texto);">
+                                                Tu carrito está vacío.
+                                                <a href="${pageContext.request.contextPath}/cargarproducto" style="color:var(--naranja);">Ver catálogo</a>
+                                            </td>
+                                        </tr>
+                                    </c:if>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <div class="pago-sidebar">
-
-                        <form action="${pageContext.request.contextPath}/finalizarPedido" method="POST">
+                        <div class="pago-sidebar">
                             <div class="metodos-pago-box">
-                                <h3>Método de Pago</h3>
-                                <div style="display:flex; flex-direction:column; gap:10px; margin-top:0.8rem;">
-                                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:600; color:var(--negro);">
-                                        <input type="radio" name="tipoPago" value="TARJETA" checked>
-                                        <img src="${pageContext.request.contextPath}/imgs/VISA-Logo.png" alt="Visa" style="height:24px; object-fit:contain;">
-                                        <span style="color:var(--negro);">Tarjeta de crédito/débito</span>
-                                    </label>
-                                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:600; color:var(--negro);">
-                                        <input type="radio" name="tipoPago" value="TRANSFERENCIA">
-                                        <span style="font-size:1.1rem;">🏦</span>
-                                        <span style="color:var(--negro);">Transferencia bancaria</span>
-                                    </label>
-                                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:600; color:var(--negro);">
-                                        <input type="radio" name="tipoPago" value="PAYPAL">
-                                        <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png"
-                                             alt="PayPal" style="height:24px; object-fit:contain;">
-                                        <span style="color:var(--negro);">PayPal</span>
-                                    </label>
+                                <h3>Método de pago</h3>
+                                <label class="metodo-pago-opcion">
+                                    <input type="radio" name="tipoPago" value="TARJETA" checked>
+                                    <img src="${pageContext.request.contextPath}/imgs/VISA-Logo.png" alt="Tarjeta">
+                                    Tarjeta (Visa / MC)
+                                </label>
+                                <label class="metodo-pago-opcion">
+                                    <input type="radio" name="tipoPago" value="TRANSFERENCIA">
+                                    <span style="font-size:1.2rem;">🏦</span>
+                                    Transferencia bancaria
+                                </label>
+                                <label class="metodo-pago-opcion">
+                                    <input type="radio" name="tipoPago" value="PAYPAL">
+                                    <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png"
+                                         alt="PayPal" style="height:20px;">
+                                    PayPal
+                                </label>
+                                <label class="metodo-pago-opcion">
+                                    <input type="radio" name="tipoPago" value="CONTRAENTREGA">
+                                    <span style="font-size:1.2rem;">📦</span>
+                                    Contra entrega
+                                </label>
+                            </div>
 
-                                </div>
-                            </div>
-                            <div class="total-pago-box" style="margin-top:1rem;">
-                                <h3>Total a Pagar</h3>
-                                <div class="total-input" style="font-family:var(--fuente-titulo); font-size:2rem; color:var(--naranja); font-weight:800; margin:0.5rem 0;">
+                            <div class="total-pago-box">
+                                <h3>Total a pagar</h3>
+                                <span class="monto-total-pago">
                                     $${sessionScope.carritoActual.total != null ? sessionScope.carritoActual.total : '0.00'}
-                                </div>
-                                <button type="submit" class="btn-deportivo-accion btn-naranja" style="width:100%;">Confirmar Pago</button>
+                                </span>
+                                <button type="submit" class="btn-deportivo-accion btn-naranja" style="width:100%;">
+                                    Confirmar pago
+                                </button>
                             </div>
-                        </form>
+                        </div>
 
                     </div>
-
-
-                </div>
+                </form>
             </main>
-            <%@include file="/WEB-INF/fragmentos/footer.jspf"%> 
-        </div>
 
+            <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
+        </div>
     </body>
 </html>

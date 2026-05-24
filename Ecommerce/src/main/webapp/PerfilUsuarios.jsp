@@ -25,6 +25,13 @@
                         <h1 style="font-size: 1.5rem; font-weight: 900; text-transform: uppercase;">Información de Cuenta</h1>
                     </div>
 
+                    <% if (request.getAttribute("mensajeExito") != null) {%>
+                    <div class="alerta-exito"><%= request.getAttribute("mensajeExito")%></div>
+                    <% } %>
+                    <% if (request.getAttribute("error") != null) {%>
+                    <div class="alerta-error"><%= request.getAttribute("error")%></div>
+                    <% }%>
+
                     <form action="${pageContext.request.contextPath}/editarPerfil" method="POST">
                         <div class="input-bloque">
                             <label for="txt_nombre">Nombre Completo</label>

@@ -1,5 +1,6 @@
 
 package implementaciones;
+import entidades.MetodoPago;
 import entidades.Usuario;
 import exception.PersistenciaException;
 import interfaces.IUsuariosDAO;
@@ -158,15 +159,59 @@ public class UsuariosDAO implements IUsuariosDAO {
         EntityManager em = ManejadorConexiones.getEntityManager();
         try {
             em.getTransaction().begin();
+
+            // borramos detalles del carrito
             em.createQuery(
                     "DELETE FROM DetallesCarrito dc WHERE dc.carrito.usuario.id = :uid")
                     .setParameter("uid", idUsuario)
                     .executeUpdate();
 
+            // borramos el carrito
             em.createQuery(
                     "DELETE FROM Carrito c WHERE c.usuario.id = :uid")
                     .setParameter("uid", idUsuario)
                     .executeUpdate();
+
+            // borramos las reseñas del usuario
+            em.createQuery(
+                    "DELETE FROM Reseña r WHERE r.usuario.id = :uid")
+                    .setParameter("uid", idUsuario)
+                    .executeUpdate();
+
+            // borramos los detalles de pedido
+            em.createQuery(
+                    "DELETE FROM DetallesPedido dp WHERE dp.pedido.usuario.id = :uid")
+                    .setParameter("uid", idUsuario)
+                    .executeUpdate();
+
+            // MetodoPago no tiene FK a Pedido, lo borramos manualmente
+            // obtenemos los ids de los pedidos del usuario y borramos su MetodoPago
+            List<Long> idsPedidos = em.createQuery(
+                    "SELECT p.id FROM Pedido p WHERE p.usuario.id = :uid", Long.class)
+                    .setParameter("uid", idUsuario)
+                    .getResultList();
+
+            for (Long idPedido : idsPedidos) {
+                // buscamos el pedido para obtener su metodoPago
+                entidades.Pedido pedido = em.find(entidades.Pedido.class, idPedido);
+                if (pedido != null && pedido.getMetodoPago() != null) {
+                    // desvinculamos antes de borrar
+                    MetodoPago mp = em.find(MetodoPago.class, pedido.getMetodoPago().getId());
+                    pedido.setMetodoPago(null);
+                    em.merge(pedido);
+                    if (mp != null) {
+                        em.remove(mp);
+                    }
+                }
+            }
+
+            //ahora borramos los pedidos
+            em.createQuery(
+                    "DELETE FROM Pedido p WHERE p.usuario.id = :uid")
+                    .setParameter("uid", idUsuario)
+                    .executeUpdate();
+
+            //finalmente eliminamos al usuario
             Usuario usuario = em.find(Usuario.class, idUsuario);
             if (usuario != null) {
                 em.remove(usuario);

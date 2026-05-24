@@ -52,22 +52,22 @@ public class ContextListener implements ServletContextListener {
                 productoDAO.agregarProducto(new Producto(
                     "Tenis Running Volt Pro", 2499.00, 37,
                     "Calzado ligero con amortiguación optimizada para asfalto y entrenamientos de alta intensidad.",
-                    Disponibilidad.DISPONIBLE, "prod-shoes.jpg", "Suela goma, Malla Pro-Fit, 240 g"));
+                    Disponibilidad.DISPONIBLE, "imgs/prod-shoes.jpg", "Suela goma, Malla Pro-Fit, 240 g"));
 
                 productoDAO.agregarProducto(new Producto(
                     "Jersey Fútbol Pro-Fit", 1199.00, 50,
                     "Playera transpirable con tecnología de secado rápido para máximo rendimiento.",
-                    Disponibilidad.DISPONIBLE, "prod-jersey.jpg", "100% Poliéster, Ajuste atlético"));
+                    Disponibilidad.DISPONIBLE, "imgs/prod-jersey.jpg", "100% Poliéster, Ajuste atlético"));
 
                 productoDAO.agregarProducto(new Producto(
                     "Balón Baloncesto Official", 850.00, 25,
                     "Balón reglamentario con grip texturizado para duela interior y exterior.",
-                    Disponibilidad.DISPONIBLE, "prod-ball.jpg", "Tamaño No. 7, Composite"));
+                    Disponibilidad.DISPONIBLE, "imgs/prod-ball.jpg", "Tamaño No. 7, Composite"));
 
                 productoDAO.agregarProducto(new Producto(
                     "Smartwatch Endurance Pro", 4550.00, 15,
                     "Monitor cardíaco y GPS integrado para llevar tu entrenamiento al siguiente nivel.",
-                    Disponibilidad.DISPONIBLE, "prod-smartwatch.jpg", "Batería 7 días, 50m resistencia al agua"));
+                    Disponibilidad.DISPONIBLE, "imgs/prod-smartwatch.jpg", "Batería 7 días, 50m resistencia al agua"));
 
                 System.out.println("Catálogo inicial cargado correctamente.");
             }

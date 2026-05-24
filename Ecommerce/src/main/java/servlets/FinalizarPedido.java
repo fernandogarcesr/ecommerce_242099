@@ -42,7 +42,9 @@ public class FinalizarPedido extends HttpServlet {
         }
 
         String tipoPago = request.getParameter("tipoPago");
-        if (tipoPago == null) tipoPago = "TARJETA";
+         if (tipoPago == null || tipoPago.trim().isEmpty()) {
+            tipoPago = "TARJETA";
+        }
 
         CarritoDTO carrito = (CarritoDTO) session.getAttribute("carritoActual");
         if (carrito == null || carrito.getDetallesCarrito() == null || carrito.getDetallesCarrito().isEmpty()) {

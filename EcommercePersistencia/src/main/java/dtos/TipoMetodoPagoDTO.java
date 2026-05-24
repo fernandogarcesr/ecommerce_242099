@@ -5,6 +5,6 @@
 package dtos;
 
 public enum TipoMetodoPagoDTO {
-        TARJETA,TRANSFERENCIA
+        TARJETA,TRANSFERENCIA,PAYPAL,CONTRAENTREGA
 
 }

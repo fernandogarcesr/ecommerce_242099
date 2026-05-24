@@ -1,5 +1,10 @@
 package servlets;
 
+import bos.ProductoBO;
+import dtos.ProductoDTO;
+import dtos.DisponibilidadDTO;
+import interfaces.IProductosBO;
+import java.util.List;
 import bos.CarritosBO;
 import dtos.CarritoDTO;
 import dtos.UsuarioDTO;
@@ -46,7 +51,30 @@ public class AgregarCarrito extends HttpServlet {
         }
 
         try {
+
             Long idProducto = Long.parseLong(idStr);
+
+            // verificamos si el producto tiene stock disponible
+            IProductosBO productosBO = new ProductoBO();
+            List<ProductoDTO> todos = productosBO.obtenerProductos();
+            ProductoDTO productoAgregar = null;
+            for (ProductoDTO p : todos) {
+                if (p.getId().equals(idProducto)) {
+                    productoAgregar = p;
+                    break;
+                }
+            }
+
+            // si no hay stock o esta marcado como no disponible, regresamos al catalogo con mensaje
+            if (productoAgregar == null
+                    || productoAgregar.getStock() == null
+                    || productoAgregar.getStock() <= 0
+                    || DisponibilidadDTO.NO_DISPONIBLE.equals(productoAgregar.getDisponibilidad())) {
+                request.setAttribute("mensajeStock", "Lo sentimos, este producto está agotado.");
+                request.setAttribute("listaProductos", todos);
+                request.getRequestDispatcher("/Catalogo.jsp").forward(request, response);
+                return;
+            }
 
             // Agregar el producto al carrito del usuario en la BD (cantidad 1 por defecto)
             CarritoDTO carritoActualizado = carritosBO.agregarProducto(usuario.getId(), idProducto, 1);
@@ -64,6 +92,8 @@ public class AgregarCarrito extends HttpServlet {
             request.setAttribute("error", "Error inesperado: " + e.getMessage());
             request.getRequestDispatcher("/cargarproducto").forward(request, response);
         }
+        
+        
     }
 
     @Override
