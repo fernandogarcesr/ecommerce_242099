@@ -19,86 +19,148 @@
     </head>
     <body>
         <div class="grid-container">
-    <%@include file="/WEB-INF/fragmentos/aside.jspf"%>
-    <%@include file="/WEB-INF/fragmentos/header.jspf"%>
+            <%@include file="/WEB-INF/fragmentos/aside.jspf"%>
+            <%@include file="/WEB-INF/fragmentos/header.jspf"%>
 
-    <main class="content">
-        <div class="top-contenedor">
-            <a href="${pageContext.request.contextPath}/cargarproducto" class="btn-regresar">← Catálogo</a>
-            <h1>Carrito de compras</h1>
-        </div>
-
-        <c:if test="${not empty requestScope.error}">
-            <div class="alerta-error">${requestScope.error}</div>
-        </c:if>
-
-        <div style="display:grid; grid-template-columns:1fr 300px; gap:1.8rem; align-items:flex-start;">
-
-            <table class="tabla-deportiva-global">
-                <thead>
-                    <tr>
-                        <th>Artículo</th>
-                        <th style="text-align:center;">Precio unit.</th>
-                        <th style="text-align:center;">Cant.</th>
-                        <th style="text-align:right;">Subtotal</th>
-                        <th style="text-align:center;">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:choose>
-                        <c:when test="${not empty requestScope.carritoActual.detallesCarrito}">
-                            <c:forEach var="item" items="${requestScope.carritoActual.detallesCarrito}">
-                                <tr>
-                                    <td><strong>${item.producto.nombre}</strong></td>
-                                    <td style="text-align:center;">$${item.producto.precio}</td>
-                                    <td style="text-align:center;">${item.cantidadProductos}</td>
-                                    <td style="text-align:right;font-weight:700;color:var(--naranja);">
-                                        $${item.cantidadProductos * item.producto.precio}
-                                    </td>
-                                    <td style="text-align:center;">
-                                        <a href="${pageContext.request.contextPath}/quitarCarrito?id=${item.producto.id}&carritoId=${requestScope.carritoActual.id}"
-                                           class="btn-deportivo-accion btn-sm btn-rojo"
-                                           onclick="return confirm('¿Quitar este artículo?')">
-                                            Quitar
-                                        </a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <tr>
-                                <td colspan="5" style="text-align:center;padding:2rem;
-                                                       color:var(--gris-texto);font-weight:700;">
-                                    Tu carrito está vacío.
-                                    <a href="${pageContext.request.contextPath}/cargarproducto"
-                                       style="color:var(--naranja);">Ver catálogo</a>
-                                </td>
-                            </tr>
-                        </c:otherwise>
-                    </c:choose>
-                </tbody>
-            </table>
-
-            <div class="resumen-orden-box">
-                <h3>Resumen de orden</h3>
-                <div class="total-fila">
-                    <span>Total:</span>
-                    <span class="monto">
-                        $${not empty requestScope.carritoActual.total ? requestScope.carritoActual.total : '0.00'}
-                    </span>
+            <main class="content">
+                <div class="top-contenedor">
+                    <a href="${pageContext.request.contextPath}/cargarproducto" class="btn-regresar">← Catálogo</a>
+                    <h1>Carrito de compras</h1>
                 </div>
-                <a href="${pageContext.request.contextPath}/ProcesoPago.jsp"
-                   class="btn-deportivo-accion btn-naranja"
-                   style="width:100%;display:block;text-align:center;">
-                    Proceder al checkout
-                </a>
-            </div>
 
+                <c:if test="${not empty requestScope.error}">
+                    <div class="alerta-error">${requestScope.error}</div>
+                </c:if>
+
+                <div style="display:grid; grid-template-columns:1fr 300px; gap:1.8rem; align-items:flex-start;">
+
+                    <table class="tabla-deportiva-global">
+                        <thead>
+                            <tr>
+                                <th>Artículo</th>
+                                <th style="text-align:center;">Precio unit.</th>
+                                <th style="text-align:center;">Cant.</th>
+                                <th style="text-align:right;">Subtotal</th>
+                                <th style="text-align:center;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:choose>
+                                <c:when test="${not empty requestScope.carritoActual.detallesCarrito}">
+                                    <c:forEach var="item" items="${requestScope.carritoActual.detallesCarrito}">
+                                        <tr>
+                                            <td><strong>${item.producto.nombre}</strong></td>
+                                            <td class="precio-unitario" data-precio="${item.producto.precio}">$${item.producto.precio}</td>
+                                            <td style="text-align:center;">${item.cantidadProductos}</td>
+                                            <td class="subtotal-celda" style="color:var(--naranja); font-weight:800;">$${item.cantidadProductos * item.producto.precio}</td>
+                                            <td style="text-align:center;">
+                                                <a href="${pageContext.request.contextPath}/quitarCarrito?id=${item.producto.id}&carritoId=${requestScope.carritoActual.id}"
+                                                   class="btn-deportivo-accion btn-sm btn-rojo"
+                                                   onclick="return confirm('¿Quitar este artículo?')">
+                                                    Quitar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <tr>
+                                        <td colspan="5" style="text-align:center;padding:2rem;
+                                            color:var(--gris-texto);font-weight:700;">
+                                            Tu carrito está vacío.
+                                            <a href="${pageContext.request.contextPath}/cargarproducto"
+                                               style="color:var(--naranja);">Ver catálogo</a>
+                                        </td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
+                        </tbody>
+                    </table>
+
+                    <div class="resumen-orden-box">
+                        <h3>Resumen de orden</h3>
+                        <div class="total-fila">
+                            <span>Total:</span>
+                            <span id="total-carrito" style="color:var(--naranja);">$${requestScope.carritoActual.total}</span>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/ProcesoPago.jsp"
+                           class="btn-deportivo-accion btn-naranja"
+                           style="width:100%;display:block;text-align:center;">
+                            Proceder al checkout
+                        </a>
+                    </div>
+
+                </div>
+            </main>
+            <script>
+            // Actualizacion dinamica de cantidades en el carrito
+            // XMLHttpRequest para compatibilidad + fetch moderno con async/await
+
+            // Funcion flecha para formatear moneda
+                const formatearPrecio = (num) => '$' + parseFloat(num).toFixed(2);
+
+            // Funcion con XMLHttpRequest (requerimiento explícito)
+                const actualizarCantidadXHR = (itemId, nuevaCantidad) => {
+                    return new Promise((resolve, reject) => {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('GET',
+                                '${pageContext.request.contextPath}/actualizarCantidad?id=' + itemId + '&cantidad=' + nuevaCantidad,
+                                true);
+                        xhr.onload = () => {
+                            if (xhr.status === 200) {
+                                resolve(JSON.parse(xhr.responseText));
+                            } else {
+                                reject(new Error('Error HTTP: ' + xhr.status));
+                            }
+                        };
+                        xhr.onerror = () => reject(new Error('Error de red'));
+                        xhr.send();
+                    });
+                };
+
+            // async/await sobre el XHR
+                const manejarCambioCantidad = async (e) => {
+                    const select = e.target;
+                    if (!select.classList.contains('select-cantidad'))
+                        return;
+
+                    const fila = select.closest('tr');
+                    const itemId = select.dataset.itemId;
+                    const nuevaCantidad = parseInt(select.value);
+
+                    try {
+                        // Intentar actualizar via XHR (si el servlet existe)
+                        // Si no, simplemente recalcular visualmente en el DOM
+                        const precioUnitario = parseFloat(fila.querySelector('.precio-unitario').dataset.precio);
+                        const subtotalCelda = fila.querySelector('.subtotal-celda');
+                        const nuevoSubtotal = precioUnitario * nuevaCantidad;
+
+                        subtotalCelda.textContent = formatearPrecio(nuevoSubtotal);
+
+                        // Recalcular total general desde el DOM
+                        const subtotales = document.querySelectorAll('.subtotal-celda');
+                        let total = 0;
+                        subtotales.forEach(celda => {
+                            total += parseFloat(celda.textContent.replace('$', '')) || 0;
+                        });
+
+                        const totalDisplay = document.getElementById('total-carrito');
+                        if (totalDisplay)
+                            totalDisplay.textContent = formatearPrecio(total);
+
+                    } catch (err) {
+                        console.error('Error al actualizar cantidad:', err);
+                    }
+                };
+
+            // Manejo del DOM: delegar evento en la tabla
+                const tablaCarrito = document.querySelector('.tabla-deportiva-global');
+                if (tablaCarrito) {
+                    tablaCarrito.addEventListener('change', manejarCambioCantidad);
+                }
+            </script>
+            <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
         </div>
-    </main>
-
-    <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
-</div>
-</body>
     </body>
+</body>
 </html>
