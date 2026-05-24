@@ -49,13 +49,14 @@
                             </tr>
                         </c:forEach>
                     </c:when>
-                    <c:otherwise>
-                        <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gris-texto);font-weight:700;">No hay reseñas publicadas.</td></tr>
-                    </c:otherwise>
+                            <c:otherwise>
+                                <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gris-texto);font-weight:700;">No hay reseñas publicadas.</td></tr>
+                            </c:otherwise>
                 </c:choose>
             </tbody>
         </table>
     </main>
+    <script src="${pageContext.request.contextPath}/js/nav.js"></script>
     <%@include file="/WEB-INF/fragmentos/footer.jspf" %>
 </div>
 </body>

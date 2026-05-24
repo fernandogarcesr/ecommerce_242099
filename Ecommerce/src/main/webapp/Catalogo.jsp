@@ -14,7 +14,7 @@ Author     : Fernando Garces
         <title>Catálogo Deportivo - SportsZone</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
     </head>
-    <body data-ctx="${pageContext.request.contextPath}">
+    <body>
         <div class="grid-container">
             <%@include file="/WEB-INF/fragmentos/aside.jspf"%>
             <%@include file="/WEB-INF/fragmentos/header.jspf"%>
@@ -85,7 +85,7 @@ Author     : Fernando Garces
                 </div>
             </main>
 
-            <script src="${pageContext.request.contextPath}/js/app.js"></script>
+            <script src="${pageContext.request.contextPath}/js/catalogo.js"></script>
             <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
         </div>
     </body>

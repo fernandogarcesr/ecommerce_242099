@@ -49,10 +49,11 @@
                             <a href="${pageContext.request.contextPath}/cargarproducto?vista=adminProducto" class="btn-deportivo-accion btn-outline">Cancelar</a>
                             <button type="submit" class="btn-deportivo-accion btn-naranja">Agregar producto</button>
                         </div>
-                        </form>
+                    </form>
+                </div>
+            </main>
+            <script src="${pageContext.request.contextPath}/js/nav.js"></script>
+            <%@include file="/WEB-INF/fragmentos/footer.jspf" %>
         </div>
-        </main>
-        <%@include file="/WEB-INF/fragmentos/footer.jspf" %>
-        </div>
-        </body>
-        </html>
+    </body>
+</html>

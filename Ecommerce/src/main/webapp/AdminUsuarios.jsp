@@ -47,7 +47,7 @@
                                 <c:forEach var="u" items="${requestScope.usuarios}">
                                     <tr>
                                         <td style="font-weight:800;">${u.nombre}</td>
-                                        <td style="color:var(--gris-texto);">${u.correo}</td>
+                                        <td style="color:var(--gris-texto);">${not empty u.correo ? u.correo : '—'}</td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${not empty u.fechaRegistro}">
@@ -89,15 +89,16 @@
                                     </div>
                                 </td>
                                 </tr>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gris-texto);font-weight:700;">No hay usuarios registrados.</td></tr>
-                        </c:otherwise>
-                    </c:choose>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gris-texto);font-weight:700;">No hay usuarios registrados.</td></tr>
+                            </c:otherwise>
+                        </c:choose>
                     </tbody>
                 </table>
             </main>
+            <script src="${pageContext.request.contextPath}/js/nav.js"></script>
             <%@include file="/WEB-INF/fragmentos/footer.jspf" %>
         </div>
     </body>

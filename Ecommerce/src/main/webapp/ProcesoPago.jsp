@@ -10,10 +10,11 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Proceso de Pago - SportsZone</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
     </head>
-    <body data-ctx="${pageContext.request.contextPath}">
+    <body>
         <div class="grid-container">
             <%@include  file="/WEB-INF/fragmentos/aside.jspf"%>
             <%@include file="/WEB-INF/fragmentos/header.jspf"%>
@@ -39,7 +40,7 @@
                 </div>
 
                 <%-- Todo el checkout en un solo form --%>
-                <form action="${pageContext.request.contextPath}/finalizarPedido" method="POST">
+                <form id="form-pago" action="${pageContext.request.contextPath}/finalizarPedido" method="POST">
                     <div style="display:grid; grid-template-columns:1fr 300px; gap:1.8rem; align-items:flex-start;">
 
                         <div class="pago-productos-box">
@@ -78,26 +79,50 @@
                             <div class="metodos-pago-box">
                                 <h3>Método de pago</h3>
                                 <label class="metodo-pago-opcion">
-                                    <input type="radio" name="tipoPago" value="TARJETA" checked>
+                                    <input type="radio" name="metodoPago" value="TARJETA" checked>
                                     <img src="${pageContext.request.contextPath}/imgs/VISA-Logo.png" alt="Tarjeta">
                                     Tarjeta (Visa / MC)
                                 </label>
                                 <label class="metodo-pago-opcion">
-                                    <input type="radio" name="tipoPago" value="TRANSFERENCIA">
+                                    <input type="radio" name="metodoPago" value="TRANSFERENCIA">
                                     <span style="font-size:1.2rem;">🏦</span>
                                     Transferencia bancaria
                                 </label>
                                 <label class="metodo-pago-opcion">
-                                    <input type="radio" name="tipoPago" value="PAYPAL">
+                                    <input type="radio" name="metodoPago" value="PAYPAL">
                                     <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png"
                                          alt="PayPal" style="height:20px;">
                                     PayPal
                                 </label>
                                 <label class="metodo-pago-opcion">
-                                    <input type="radio" name="tipoPago" value="CONTRAENTREGA">
+                                    <input type="radio" name="metodoPago" value="CONTRAENTREGA">
                                     <span style="font-size:1.2rem;">📦</span>
                                     Contra entrega
                                 </label>
+
+                                <%-- Secciones dinamicas por metodo de pago --%>
+                                <div id="sec-tarjeta" style="display:none; margin-top:1rem;">
+                                    <h4 style="margin-bottom:.5rem;">Datos de tarjeta</h4>
+                                    <input type="text" id="titular" placeholder="Nombre del titular"
+                                           style="width:100%;padding:.5rem;margin-bottom:.5rem;border:1px solid #ccc;border-radius:6px;">
+                                    <input type="text" id="num-tarjeta" placeholder="1234 5678 9012 3456" maxlength="19"
+                                           style="width:100%;padding:.5rem;margin-bottom:.5rem;border:1px solid #ccc;border-radius:6px;">
+                                    <div style="display:flex;gap:.5rem;">
+                                        <input type="text" id="expiracion" placeholder="MM/YY" maxlength="5"
+                                               style="flex:1;padding:.5rem;border:1px solid #ccc;border-radius:6px;">
+                                        <input type="text" id="cvv" placeholder="CVV" maxlength="4"
+                                               style="flex:1;padding:.5rem;border:1px solid #ccc;border-radius:6px;">
+                                    </div>
+                                </div>
+                                <div id="sec-transferencia" style="display:none; margin-top:1rem;padding:.8rem;background:#f0f4ff;border-radius:6px;">
+                                    <p><strong>Banco:</strong> BBVA</p>
+                                    <p><strong>CLABE:</strong> 012 180 0123456789 01</p>
+                                    <p style="font-size:.8rem;color:#666;">Envía tu comprobante por WhatsApp al 6441234567</p>
+                                </div>
+                                <div id="sec-contra-entrega" style="display:none; margin-top:1rem;padding:.8rem;background:#f0fff4;border-radius:6px;">
+                                    <p>💵 Pagarás en efectivo al recibir tu pedido.</p>
+                                </div>
+                                <div id="errores-pago" style="display:none; margin-top:.8rem; color:#c0392b; font-size:.9rem;"></div>
                             </div>
 
                             <div class="total-pago-box">
@@ -105,7 +130,7 @@
                                 <span class="monto-total-pago">
                                     $${sessionScope.carritoActual.total != null ? sessionScope.carritoActual.total : '0.00'}
                                 </span>
-                                <button type="submit" class="btn-deportivo-accion btn-naranja" style="width:100%;">
+                                <button id="btn-confirmar-pago" type="submit" class="btn-deportivo-accion btn-naranja" style="width:100%;">
                                     Confirmar pago
                                 </button>
                             </div>
@@ -114,7 +139,7 @@
                     </div>
                 </form>
             </main>
-            <script src="${pageContext.request.contextPath}/js/app.js"></script>
+            <script src="${pageContext.request.contextPath}/js/pago.js"></script>
             <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
         </div>
     </body>

@@ -15,10 +15,11 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Mis Pedidos - SportsZone</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
     </head>
-    <body data-ctx="${pageContext.request.contextPath}">   
+    <body>   
         <div class="grid-container">
             <%@include file="/WEB-INF/fragmentos/aside.jspf"%>
             <%@include file="/WEB-INF/fragmentos/header.jspf"%>
@@ -83,7 +84,7 @@
                     </tbody>
                 </table>
             </main>
-            <script src="${pageContext.request.contextPath}/js/app.js"></script>
+            <script src="${pageContext.request.contextPath}/js/nav.js"></script>
             <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
         </div>
     </body>

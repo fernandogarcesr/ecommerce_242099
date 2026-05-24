@@ -14,10 +14,11 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Carrito de Compras - SportsZone</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
     </head>
-    <body data-ctx="${pageContext.request.contextPath}">
+    <body>
         <div class="grid-container">
             <%@include file="/WEB-INF/fragmentos/aside.jspf"%>
             <%@include file="/WEB-INF/fragmentos/header.jspf"%>
@@ -92,7 +93,7 @@
 
                 </div>
             </main>
-            <script src="${pageContext.request.contextPath}/js/app.js"></script>
+            <script src="${pageContext.request.contextPath}/js/carrito.js"></script>
             <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
         </div>
     </body>

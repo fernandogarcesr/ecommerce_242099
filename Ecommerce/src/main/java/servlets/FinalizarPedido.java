@@ -41,7 +41,7 @@ public class FinalizarPedido extends HttpServlet {
             return;
         }
 
-        String tipoPago = request.getParameter("tipoPago");
+        String tipoPago = request.getParameter("metodoPago");
          if (tipoPago == null || tipoPago.trim().isEmpty()) {
             tipoPago = "TARJETA";
         }
@@ -68,6 +68,12 @@ public class FinalizarPedido extends HttpServlet {
 
             // Pasar el pedido a la vista de confirmacion
             session.setAttribute("pedidoConfirmado", pedidoCreado);
+            // Enviar correo de confirmación
+            try {
+                enviarCorreoConfirmacion(usuario.getCorreo(), usuario.getNombre(), pedidoCreado.getId().toString());
+            } catch (Exception mailEx) {
+                System.err.println("Aviso: no se pudo enviar el correo: " + mailEx.getMessage());
+            }
             response.sendRedirect(request.getContextPath() + "/PagoConfirmado.jsp");
 
         } catch (AgregarPedidoException e) {
@@ -83,5 +89,36 @@ public class FinalizarPedido extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.sendRedirect(request.getContextPath() + "/CargarCarrito");
+    }
+
+    private void enviarCorreoConfirmacion(String destinatario, String nombre, String numeroPedido) throws Exception {
+        String host = "smtp.gmail.com"; 
+        String puerto = "587";
+        String usuario = "fernandogarcesrodriguez@gmail.com";   
+        String clave = "yqbs zymw ibra tbas";
+
+        java.util.Properties props = new java.util.Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", puerto);
+
+        jakarta.mail.Session mailSession = jakarta.mail.Session.getInstance(props,
+                new jakarta.mail.Authenticator() {
+            @Override
+            protected jakarta.mail.PasswordAuthentication getPasswordAuthentication() {
+                return new jakarta.mail.PasswordAuthentication(usuario, clave);
+            }
+        });
+
+        jakarta.mail.Message mensaje = new jakarta.mail.internet.MimeMessage(mailSession);
+        mensaje.setFrom(new jakarta.mail.internet.InternetAddress("fernandogarcesrodriguez@gmail.com"));
+        mensaje.setRecipients(jakarta.mail.Message.RecipientType.TO,
+                jakarta.mail.internet.InternetAddress.parse(destinatario));
+        mensaje.setSubject("Pedido confirmado – SportsZone #" + numeroPedido);
+        mensaje.setText("Hola " + nombre + ",\n\nTu pedido #" + numeroPedido
+                + " ha sido confirmado exitosamente.\n\nGracias por comprar en SportsZone.");
+
+        jakarta.mail.Transport.send(mensaje);
     }
 }

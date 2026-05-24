@@ -61,6 +61,7 @@
                     </tbody>
                 </table>
             </main>
+            <script src="${pageContext.request.contextPath}/js/nav.js"></script>
             <%@include file="/WEB-INF/fragmentos/footer.jspf" %>
         </div>
     </body>
