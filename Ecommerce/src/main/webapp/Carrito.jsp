@@ -17,7 +17,7 @@
         <title>Carrito de Compras - SportsZone</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
     </head>
-    <body>
+    <body data-ctx="${pageContext.request.contextPath}">
         <div class="grid-container">
             <%@include file="/WEB-INF/fragmentos/aside.jspf"%>
             <%@include file="/WEB-INF/fragmentos/header.jspf"%>
@@ -92,73 +92,7 @@
 
                 </div>
             </main>
-            <script>
-            // Actualizacion dinamica de cantidades en el carrito
-            // XMLHttpRequest para compatibilidad + fetch moderno con async/await
-
-            // Funcion flecha para formatear moneda
-                const formatearPrecio = (num) => '$' + parseFloat(num).toFixed(2);
-
-            // Funcion con XMLHttpRequest (requerimiento explícito)
-                const actualizarCantidadXHR = (itemId, nuevaCantidad) => {
-                    return new Promise((resolve, reject) => {
-                        const xhr = new XMLHttpRequest();
-                        xhr.open('GET',
-                                '${pageContext.request.contextPath}/actualizarCantidad?id=' + itemId + '&cantidad=' + nuevaCantidad,
-                                true);
-                        xhr.onload = () => {
-                            if (xhr.status === 200) {
-                                resolve(JSON.parse(xhr.responseText));
-                            } else {
-                                reject(new Error('Error HTTP: ' + xhr.status));
-                            }
-                        };
-                        xhr.onerror = () => reject(new Error('Error de red'));
-                        xhr.send();
-                    });
-                };
-
-            // async/await sobre el XHR
-                const manejarCambioCantidad = async (e) => {
-                    const select = e.target;
-                    if (!select.classList.contains('select-cantidad'))
-                        return;
-
-                    const fila = select.closest('tr');
-                    const itemId = select.dataset.itemId;
-                    const nuevaCantidad = parseInt(select.value);
-
-                    try {
-                        // Intentar actualizar via XHR (si el servlet existe)
-                        // Si no, simplemente recalcular visualmente en el DOM
-                        const precioUnitario = parseFloat(fila.querySelector('.precio-unitario').dataset.precio);
-                        const subtotalCelda = fila.querySelector('.subtotal-celda');
-                        const nuevoSubtotal = precioUnitario * nuevaCantidad;
-
-                        subtotalCelda.textContent = formatearPrecio(nuevoSubtotal);
-
-                        // Recalcular total general desde el DOM
-                        const subtotales = document.querySelectorAll('.subtotal-celda');
-                        let total = 0;
-                        subtotales.forEach(celda => {
-                            total += parseFloat(celda.textContent.replace('$', '')) || 0;
-                        });
-
-                        const totalDisplay = document.getElementById('total-carrito');
-                        if (totalDisplay)
-                            totalDisplay.textContent = formatearPrecio(total);
-
-                    } catch (err) {
-                        console.error('Error al actualizar cantidad:', err);
-                    }
-                };
-
-            // Manejo del DOM: delegar evento en la tabla
-                const tablaCarrito = document.querySelector('.tabla-deportiva-global');
-                if (tablaCarrito) {
-                    tablaCarrito.addEventListener('change', manejarCambioCantidad);
-                }
-            </script>
+            <script src="${pageContext.request.contextPath}/js/app.js"></script>
             <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
         </div>
     </body>

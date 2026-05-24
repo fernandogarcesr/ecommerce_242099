@@ -30,6 +30,11 @@
             </label>
         </div>
 
+        <div class="input-bloque">
+            <label for="fecha_desde">Disponible desde</label>
+            <input type="date" name="fecha_desde" id="fecha_desde" class="input-campo">
+        </div>
+
         <button type="submit" class="btn-deportivo-accion" style="width: 100%;">Aplicar Filtros</button>
     </form>
 </div>

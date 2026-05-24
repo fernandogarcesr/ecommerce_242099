@@ -14,7 +14,7 @@ Author     : Fernando Garces
         <title>Catálogo Deportivo - SportsZone</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
     </head>
-    <body>
+    <body data-ctx="${pageContext.request.contextPath}">
         <div class="grid-container">
             <%@include file="/WEB-INF/fragmentos/aside.jspf"%>
             <%@include file="/WEB-INF/fragmentos/header.jspf"%>
@@ -84,67 +84,8 @@ Author     : Fernando Garces
                     </div>
                 </div>
             </main>
-            <script>
-            // Filtrado dinamico del catalogo con Fetch API y async/await
-              // Manejo del DOM y BOM (document, window)
 
-                const formFiltro = document.querySelector('.seccion-filtros form');
-                const tablaCuerpo = document.querySelector('.tabla-deportiva-global tbody');
-
-                // Función flecha para construir la URL de busqueda
-                const construirURL = (base, params) => {
-                    const url = new URL(base, window.location.href);
-                    Object.entries(params).forEach(([k, v]) => {
-                        if (v)
-                            url.searchParams.set(k, v);
-                    });
-                    return url.toString();
-                };
-
-                // Funcion asíncrona con async/await y Fetch
-                const filtrarProductos = async (e) => {
-                    e.preventDefault();
-
-                    const nombre = document.getElementById('txt_productos').value.trim();
-                    const precio = document.getElementById('txt_precio').value.trim();
-                    const orden = document.querySelector('input[name="orden"]:checked').value;
-                    const solo = document.querySelector('input[name="soloDisponibles"]')?.checked;
-
-                    const url = construirURL(
-                            '${pageContext.request.contextPath}/cargarproducto',
-                            {txt_productos: nombre, txt_precio: precio, orden, soloDisponibles: solo ? 'true' : ''}
-                    );
-
-                    try {
-                        tablaCuerpo.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:1.5rem;">Cargando...</td></tr>';
-
-                        const response = await fetch(url, {
-                            headers: {'X-Requested-With': 'XMLHttpRequest'}
-                        });
-
-                        if (!response.ok)
-                            throw new Error('Error al obtener productos');
-
-                        // Recargar con los nuevos parametros vía BOM
-                        window.location.href = url;
-
-                    } catch (error) {
-                        // resolve/reject implícito mediante try/catch de async
-                        return new Promise((resolve, reject) => {
-                            reject(error);
-                            tablaCuerpo.innerHTML =
-                                    '<tr><td colspan="3" style="text-align:center;color:red;">Error al cargar productos.</td></tr>';
-                            resolve();
-                        });
-                    }
-                };
-
-                // Manejo del DOM: escuchar el submit del formulario
-                if (formFiltro) {
-                    formFiltro.addEventListener('submit', filtrarProductos);
-                }
-            </script>
-
+            <script src="${pageContext.request.contextPath}/js/app.js"></script>
             <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
         </div>
     </body>
