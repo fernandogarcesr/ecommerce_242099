@@ -18,72 +18,73 @@
         <title>Mis Pedidos - SportsZone</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
     </head>
-    <div class="grid-container">
-        <%@include file="/WEB-INF/fragmentos/aside.jspf"%>
-        <%@include file="/WEB-INF/fragmentos/header.jspf"%>
+    <body data-ctx="${pageContext.request.contextPath}">   
+        <div class="grid-container">
+            <%@include file="/WEB-INF/fragmentos/aside.jspf"%>
+            <%@include file="/WEB-INF/fragmentos/header.jspf"%>
 
-        <main class="content">
-            <div class="top-contenedor">
-                <h1>Mis compras</h1>
-            </div>
+            <main class="content">
+                <div class="top-contenedor">
+                    <h1>Mis compras</h1>
+                </div>
 
-            <c:if test="${not empty requestScope.error}">
-                <div class="alerta-error">${requestScope.error}</div>
-            </c:if>
+                <c:if test="${not empty requestScope.error}">
+                    <div class="alerta-error">${requestScope.error}</div>
+                </c:if>
 
-            <table class="tabla-deportiva-global">
-                <thead>
-                    <tr>
-                        <th>Pedido</th>
-                        <th>Fecha</th>
-                        <th>Total pagado</th>
-                        <th>Método de pago</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:choose>
-                        <c:when test="${not empty requestScope.listaPedidos}">
-                            <c:forEach var="p" items="${requestScope.listaPedidos}">
+                <table class="tabla-deportiva-global">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Fecha</th>
+                            <th>Total pagado</th>
+                            <th>Método de pago</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:choose>
+                            <c:when test="${not empty requestScope.listaPedidos}">
+                                <c:forEach var="p" items="${requestScope.listaPedidos}">
+                                    <tr>
+                                        <td style="font-weight:700;color:var(--naranja);">#${p.numeroPedido}</td>
+                                        <td>${p.fechaHoraFormateada}</td>
+                                        <td style="font-weight:700;">
+                                            $<fmt:formatNumber value="${p.total}" maxFractionDigits="2" minFractionDigits="2"/>
+                                        </td>
+                                        <td>${p.metodoPago.tipo}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${p.estado == 'PENDIENTE'}">
+                                                    <span class="badge badge-pendiente">Pendiente</span>
+                                                </c:when>
+                                                <c:when test="${p.estado == 'ENVIADO'}">
+                                                    <span class="badge badge-enviado">Enviado</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="badge badge-entregado">Entregado</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
                                 <tr>
-                                    <td style="font-weight:700;color:var(--naranja);">#${p.numeroPedido}</td>
-                                    <td>${p.fechaHoraFormateada}</td>
-                                    <td style="font-weight:700;">
-                                        $<fmt:formatNumber value="${p.total}" maxFractionDigits="2" minFractionDigits="2"/>
-                                    </td>
-                                    <td>${p.metodoPago.tipo}</td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${p.estado == 'PENDIENTE'}">
-                                                <span class="badge badge-pendiente">Pendiente</span>
-                                            </c:when>
-                                            <c:when test="${p.estado == 'ENVIADO'}">
-                                                <span class="badge badge-enviado">Enviado</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="badge badge-entregado">Entregado</span>
-                                            </c:otherwise>
-                                        </c:choose>
+                                    <td colspan="5" style="text-align:center;padding:2rem;
+                                    color:var(--gris-texto);font-weight:700;">
+                                        Aún no has realizado ninguna compra.
+                                        <a href="${pageContext.request.contextPath}/cargarproducto"
+                                           style="color:var(--naranja);">Ver catálogo</a>
                                     </td>
                                 </tr>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <tr>
-                                <td colspan="5" style="text-align:center;padding:2rem;
-                                    color:var(--gris-texto);font-weight:700;">
-                                    Aún no has realizado ninguna compra.
-                                    <a href="${pageContext.request.contextPath}/cargarproducto"
-                                       style="color:var(--naranja);">Ver catálogo</a>
-                                </td>
-                            </tr>
-                        </c:otherwise>
-                    </c:choose>
-                </tbody>
-            </table>
-        </main>
-
-        <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
-    </div>
-</body>
+                            </c:otherwise>
+                        </c:choose>
+                    </tbody>
+                </table>
+            </main>
+            <script src="${pageContext.request.contextPath}/js/app.js"></script>
+            <%@include file="/WEB-INF/fragmentos/footer.jspf"%>
+        </div>
+    </body>
 </html>

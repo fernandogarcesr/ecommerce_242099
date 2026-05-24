@@ -20,7 +20,7 @@
     <title>Dejar Reseña - SportsZone</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles.css">
 </head>
-<body>
+<body data-ctx="${pageContext.request.contextPath}">
     <div class="grid-container">
         <%@include file="/WEB-INF/fragmentos/aside.jspf" %>
         <%@include file="/WEB-INF/fragmentos/header.jspf" %>
@@ -80,7 +80,7 @@
                 </div>
             </div>
         </main>
-
+        <script src="${pageContext.request.contextPath}/js/app.js"></script>
         <%@include file="/WEB-INF/fragmentos/footer.jspf" %>
     </div>
 </body>

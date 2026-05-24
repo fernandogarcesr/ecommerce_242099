@@ -723,3 +723,54 @@ a { text-decoration:none; color:inherit; }
     .detalle-producto-container { grid-template-columns:1fr; }
     .grid-admin-cards { grid-template-columns:1fr; }
 }
+
+/* Responsive para telefono - menos de 480px */
+@media (max-width: 480px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: "header" "content" "footer";
+    }
+    .top-contenedor h1 {
+        font-size: 1.2rem;
+    }
+    .tabla-deportiva-global th,
+    .tabla-deportiva-global td {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    .btn-deportivo-accion {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.82rem;
+    }
+    .caja-form {
+        padding: 1rem;
+    }
+    .detalle-producto-container {
+        grid-template-columns: 1fr;
+    }
+    .confirmacion-box {
+        padding: 1rem;
+    }
+    /* En movil ocultar sidebar y mostrar nav horizontal */
+    .sidebar-tienda {
+        display: none;
+    }
+    .content {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-detalles {
+        grid-template-columns: 1fr;
+    }
+    .resumen-orden-box {
+        width: 100%;
+    }
+    /* Carrito en movil */
+    .tabla-deportiva-global {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
