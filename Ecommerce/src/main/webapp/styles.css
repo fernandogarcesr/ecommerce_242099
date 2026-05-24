@@ -289,25 +289,33 @@ html, body { height: 100%; }
     white-space: nowrap;
 }
 
-.btn-deportivo-accion:hover { background: #e04800;; }
+.btn-deportivo-accion:hover { background: var(--naranja); }
 
-.btn-naranja { background: var(--naranja) !important; }
-.btn-naranja:hover { background: var(--naranja-dark) !important; }
+.btn-naranja { background: var(--naranja) !important; color: #fff !important;}
+.btn-naranja:hover { background: var(--naranja) !important; }
+
+.btn-negro { background: var(--negro) !important; color: #fff !important; }
+.btn-negro:hover { background: var(--negro) !important; }
 
 .btn-sm { padding: 0.45rem 0.9rem; font-size: 0.75rem; }
 
-.btn-rojo  { background: var(--rojo)  !important; }
-.btn-verde { background: var(--verde) !important; }
-.btn-azul  { background: var(--azul)  !important; }
+.btn-rojo  { background: var(--rojo)  !important; color: #fff !important;}
+.btn-rojo:hover  { background: var(--rojo)  !important; }
+
+.btn-verde { background: var(--verde) !important; color: #fff !important;}
+.btn-verde:hover { background: var(--verde) !important; }
+
+.btn-azul  { background: var(--azul)  !important; color: #fff !important;}
+.btn-azul:hover  { background: var(--azul)  !important; }
 
 .btn-outline {
-    background: transparent !important;
+    background: #fff !important;
     color: var(--negro) !important;
     border: 1.5px solid var(--negro) !important;
 }
 .btn-outline:hover {
-    background: var(--negro) !important;
-    color: #fff !important;
+    background: #fff !important;
+    color: var(--negro) !important;
 }
 
 /* 
