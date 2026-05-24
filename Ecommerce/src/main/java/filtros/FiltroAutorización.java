@@ -25,7 +25,15 @@ public class FiltroAutorización implements Filter {
         "DetallesProducto.jsp",
         "Register.jsp",
         "registraUsuario",
-        "cargarproducto",};
+        "cargarproducto",
+        "cargarpedidos",
+        "CargarCarrito", 
+        "agregarCarrito", 
+        "quitarCarrito", 
+        "GuardarResenia",
+        "finalizarPedido", 
+        "EditarPerfil", 
+    };
 
     String[] paginasAdmin = {
         "AdminCatalogo.jsp",
@@ -38,7 +46,6 @@ public class FiltroAutorización implements Filter {
         "AgregarProducto",
         "EditarProducto",
         "borrarproducto",
-        "cargarpedidos",
         "modificar_pedido",
         "AdministrarResenias",
         "eliminarResenia",

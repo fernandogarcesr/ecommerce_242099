@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import javax.swing.tree.ExpandVetoException;
 
 /**
  * AgregarCarrito.java
@@ -58,7 +59,10 @@ public class AgregarCarrito extends HttpServlet {
 
         } catch (CarritoException e) {
             request.setAttribute("error", "No se pudo agregar el producto: " + e.getMessage());
-            request.getRequestDispatcher("/Catalogo.jsp").forward(request, response);
+            request.getRequestDispatcher("/cargarproducto").forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("error", "Error inesperado: " + e.getMessage());
+            request.getRequestDispatcher("/cargarproducto").forward(request, response);
         }
     }
 

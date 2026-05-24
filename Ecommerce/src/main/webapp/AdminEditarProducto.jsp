@@ -17,8 +17,8 @@
         <a href="${pageContext.request.contextPath}/AdminCatalogo.jsp" class="btn-volver">← Volver al catálogo</a>
         <div class="top-contenedor"><h1>Editar producto</h1></div>
         <div class="caja-form">
-            <form action="${pageContext.request.contextPath}/editarProducto" method="post">
-                <input type="hidden" name="productoId" value="${requestScope.producto.id}">
+            <form action="${pageContext.request.contextPath}/EditarProducto" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="${requestScope.producto.id}">
                 <div class="input-bloque">
                     <label for="nombre">Nombre del producto</label>
                     <input type="text" id="nombre" name="nombre" class="input-campo"
@@ -26,17 +26,23 @@
                 </div>
                 <div class="input-bloque">
                     <label for="descripcion">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" class="input-campo" rows="4" required>${requestScope.producto.descripcion}</textarea>
+                    <textarea id="descripcion" name="desc" class="input-campo" rows="4" required>${requestScope.producto.descripcion}</textarea>
                 </div>
-                <div class="input-bloque">
-                    <label for="precio">Precio ($)</label>
-                    <input type="number" id="precio" name="precio" class="input-campo"
-                           value="${requestScope.producto.precio}" min="0" step="0.01" required>
-                </div>
-                <div class="botones-form">
-                    <a href="${pageContext.request.contextPath}/AdminCatalogo.jsp" class="btn-deportivo-accion btn-outline">Cancelar</a>
-                    <button type="submit" class="btn-deportivo-accion btn-naranja">Actualizar</button>
-                </div>
+                    <div class="input-bloque">
+                        <label for="precio">Precio ($)</label>
+                        <input type="number" id="precio" name="precio" class="input-campo"
+                               value="${requestScope.producto.precio}" min="0" step="0.01" required>
+                    </div>
+                    <div class="input-bloque">
+                        <label for="stock">Stock</label>
+                        <input type="number" id="stock" name="stock" class="input-campo"
+                               value="${requestScope.producto.stock}" min="0" required>
+                    </div>
+                    <input type="hidden" name="rutaImagenActual" value="${requestScope.producto.rutaImagen}">
+                    <div class="botones-form">
+                        <a href="${pageContext.request.contextPath}/cargarproducto?vista=adminProducto" class="btn-deportivo-accion btn-outline">Cancelar</a>
+                        <button type="submit" class="btn-deportivo-accion btn-naranja">Actualizar</button>
+                    </div>
             </form>
         </div>
     </main>

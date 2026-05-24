@@ -52,7 +52,7 @@
                                                     <div style="display: flex; gap: 5px; justify-content: center; flex-wrap:wrap;">
                                                         <a href="${pageContext.request.contextPath}/cargarproducto?id=${p.id}" class="btn-deportivo-accion btn-sm">Detalles</a>
                                                         <a href="${pageContext.request.contextPath}/agregarCarrito?id=${p.id}" class="btn-deportivo-accion btn-sm btn-naranja">Añadir</a>
-                                                        <a href="${pageContext.request.contextPath}/CrearResenia.jsp?id=${p.id}" class="btn-deportivo-accion btn-sm btn-outline">Reseña</a>
+                                                        <a href="${pageContext.request.contextPath}/cargarproducto?id=${p.id}&vista=resenia" class="btn-deportivo-accion btn-sm btn-outline">Reseña</a>
                                                     </div>
                                                 </td>
                                             </tr>

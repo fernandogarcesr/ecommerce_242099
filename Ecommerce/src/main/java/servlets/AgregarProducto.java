@@ -65,7 +65,7 @@ public class AgregarProducto extends HttpServlet {
                 precio,                  
                 stock,                   
                 desc,                    
-                    DisponibilidadDTO.NO_DISPONIBLE,          
+                    DisponibilidadDTO.DISPONIBLE,          
                 desc,                   
                 rutaImagenBD             
             );

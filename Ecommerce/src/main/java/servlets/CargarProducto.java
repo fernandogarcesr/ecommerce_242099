@@ -84,7 +84,11 @@ public class CargarProducto extends HttpServlet {
                         System.out.println("Error o no hay reseñas en la BD: " + e.getMessage());
                     }
                     request.setAttribute("listaResenias", reseniasFiltradas);
-                    request.getRequestDispatcher("/DetallesProducto.jsp").forward(request, response);
+                    if ("resenia".equals(vista)) {
+                        request.getRequestDispatcher("/CrearResenia.jsp").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/DetallesProducto.jsp").forward(request, response);
+                    }
                 } else {
                     response.sendRedirect(request.getContextPath() + "/cargarproducto");
                 }

@@ -1,4 +1,4 @@
-<%-- 
+ <%-- 
     Document   : AdminUsuarios
     Created on : 24 mar 2026, 14:26:32
     Author     : Fernando Garces
@@ -24,6 +24,12 @@
         <div class="top-contenedor">
             <h1>Gestión de usuarios</h1>
         </div>
+        <c:if test="${not empty requestScope.mensajeError}">
+            <div style="background:#FFEBEE;border:1px solid #FFCDD2;color:#B71C1C;
+                padding:12px 16px;border-radius:6px;margin-bottom:1rem;font-size:0.9rem;">
+                ${requestScope.mensajeError}
+            </div>
+        </c:if>
         <table class="tabla-deportiva-global">
             <thead>
                 <tr>
@@ -41,7 +47,7 @@
                             <tr>
                                 <td style="font-weight:800;">${u.nombre}</td>
                                 <td style="color:var(--gris-texto);">${u.correo}</td>
-                                <td>${u.fechaRegistro}</td>
+                                <td style="color:var(--gris-texto);font-size:0.85rem;">N/A</td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${u.esActivo}">

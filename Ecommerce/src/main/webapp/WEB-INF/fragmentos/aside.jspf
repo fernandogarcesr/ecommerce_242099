@@ -23,12 +23,12 @@
             </a>
         </li>
         <li>
-            <a href="${pageContext.request.contextPath}/Carrito.jsp">
+            <a href="${pageContext.request.contextPath}/CargarCarrito">
                 ⊞&nbsp; Carrito
             </a>
         </li>
         <li>
-            <a href="${pageContext.request.contextPath}/Pedidos.jsp">
+            <a href="${pageContext.request.contextPath}/cargarpedidos">
                 ☰&nbsp; Mis pedidos
             </a>
         </li>

@@ -64,15 +64,21 @@ public class AdministrarUsuarios extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try{
+        try {
             List<UsuarioDTO> listaUsuarios = usuariosBO.mostrarUsuarios();
-    
-            request.setAttribute("usuarios", listaUsuarios);
 
+            request.setAttribute("usuarios", listaUsuarios);
             request.getRequestDispatcher("/AdminUsuarios.jsp").forward(request, response);
-        }catch(AdministrarUsuarioException e){
-            request.setAttribute("mensaje", "Error: " + e.getMessage());
-            request.getRequestDispatcher("/error.jsp").forward(request, response);
+        } catch (AdministrarUsuarioException e) {
+            e.printStackTrace();
+            request.setAttribute("usuarios", new java.util.ArrayList<>());
+            request.setAttribute("mensajeError", "Error al cargar usuarios: " + e.getMessage());
+            request.getRequestDispatcher("/AdminUsuarios.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("usuarios", new java.util.ArrayList<>());
+            request.setAttribute("mensajeError", "Error del sistema: " + e.getMessage());
+            request.getRequestDispatcher("/AdminUsuarios.jsp").forward(request, response);
         }
     }
 

@@ -43,20 +43,14 @@
                                 </td>
                                 <td>
                                     <div class="acciones-tabla">
-                                        <form action="${pageContext.request.contextPath}/actualizarEstadoPedido" method="post" style="display:inline;">
-                                            <input type="hidden" name="pedidoId" value="${p.id}">
-                                            <input type="hidden" name="estado" value="PENDIENTE">
-                                            <button type="submit" class="btn-deportivo-accion btn-sm" style="background:#fff3e0;color:#c2410c;">Pendiente</button>
-                                        </form>
-                                        <form action="${pageContext.request.contextPath}/actualizarEstadoPedido" method="post" style="display:inline;">
-                                            <input type="hidden" name="pedidoId" value="${p.id}">
-                                            <input type="hidden" name="estado" value="ENVIADO">
-                                            <button type="submit" class="btn-deportivo-accion btn-sm btn-azul">Enviado</button>
-                                        </form>
-                                        <form action="${pageContext.request.contextPath}/actualizarEstadoPedido" method="post" style="display:inline;">
-                                            <input type="hidden" name="pedidoId" value="${p.id}">
-                                            <input type="hidden" name="estado" value="ENTREGADO">
-                                            <button type="submit" class="btn-deportivo-accion btn-sm btn-verde">Entregado</button>
+                                        <form action="${pageContext.request.contextPath}/actualizarEstadoPedido" method="post">
+                                            <input type="hidden" name="idPedido" value="${p.id}">
+                                            <select name="estado-pedido">
+                                                <option value="PENDIENTE">Pendiente</option>
+                                                <option value="ENVIADO">Enviado</option>
+                                                <option value="ENTREGADO">Entregado</option>
+                                            </select>
+                                            <button type="submit" class="btn-deportivo-accion btn-sm btn-naranja">Actualizar</button>
                                         </form>
                                     </div>
                                 </td>

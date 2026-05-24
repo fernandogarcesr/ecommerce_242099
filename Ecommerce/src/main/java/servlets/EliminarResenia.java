@@ -14,8 +14,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -91,7 +89,18 @@ public class EliminarResenia extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String idStr = request.getParameter("reseniaId");
+        if (idStr == null || idStr.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/AdministrarResenias");
+            return;
+        }
+        try {
+            long id = Long.parseLong(idStr);
+            reseniasBO.eliminarResenia(id);
+            response.sendRedirect(request.getContextPath() + "/AdministrarResenias");
+        } catch (EliminarReseñaException e) {
+            response.sendRedirect(request.getContextPath() + "/AdministrarResenias");
+        }
     }
 
     /**

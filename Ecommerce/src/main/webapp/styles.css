@@ -1015,3 +1015,19 @@ footer {
     color: var(--naranja) !important;
     text-shadow: none !important;
 }
+
+.content .resena-card p,
+.content .resena-card p.resena-texto,
+.content .resena-texto {
+    color: #334155 !important;
+}
+
+.content .resena-card h4,
+.content .resena-usuario {
+    color: #0f172a !important;
+}
+
+.content .resena-card span,
+.content .resena-fecha {
+    color: #64748b !important;
+}

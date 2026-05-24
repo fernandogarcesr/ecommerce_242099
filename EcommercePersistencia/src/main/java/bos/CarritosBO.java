@@ -2,7 +2,6 @@ package bos;
 
 import dtos.CarritoDTO;
 import entidades.Carrito;
-import entidades.Producto;
 import exception.CarritoException;
 import exception.PersistenciaException;
 import implementaciones.CarritosDAO;
@@ -11,9 +10,10 @@ import interfaces.ICarritosBO;
 import interfaces.ICarritosDAO;
 import interfaces.IProductosDAO;
 import java.util.List;
-import java.util.logging.Logger;
 import mappers.CarritoMapper;
-import mappers.ProductoMapper;
+import entidades.Usuario;
+import implementaciones.UsuariosDAO;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -76,19 +76,51 @@ public class CarritosBO implements ICarritosBO {
 
     @Override
     public CarritoDTO agregarProducto(Long idUsuario, Long idProducto, Integer cantidad) throws CarritoException {
-        try{
+        try {
 
+            // Intentar obtener el carrito existente del usuario
             Carrito carrito = carritosDAO.obtenerCarritoUsuario(idUsuario);
-            
-            Producto producto = productosDAO.obtenerProductoPorId(idProducto);
+
+            // Si el usuario no tiene carrito, creamos uno nuevo en la BD
+            if (carrito == null) {
+                carrito = new Carrito();
+                // Necesitamos la entidad Usuario para asignarla al carrito
+                implementaciones.UsuariosDAO usuariosDAO = new implementaciones.UsuariosDAO();
+                entidades.Usuario usuarioEntidad = usuariosDAO.buscarPorId(idUsuario);
+                if (usuarioEntidad == null) {
+                    throw new CarritoException("No se encontró el usuario con ID: " + idUsuario);
+                }
+                carrito.setUsuario(usuarioEntidad);
+                carrito.setTotal(0.0);
+                carrito.setDetallesCarrito(new java.util.ArrayList<>());
+
+                // Persistir el carrito nuevo en la BD
+                javax.persistence.EntityManager em = implementaciones.ManejadorConexiones.getEntityManager();
+                try {
+                    em.getTransaction().begin();
+                    em.persist(carrito);
+                    em.getTransaction().commit();
+                    // Recargar para obtener el ID generado
+                    carrito = carritosDAO.obtenerCarritoUsuario(idUsuario);
+                } finally {
+                    em.close();
+                }
+            }
+
+            // Ahora sí tenemos un carrito valido, agregar el producto
+            entidades.Producto producto = productosDAO.obtenerProductoPorId(idProducto);
+            if (producto == null) {
+                throw new CarritoException("No se encontró el producto con ID: " + idProducto);
+            }
 
             Carrito actualizado = carritosDAO.agregarProducto(producto, carrito.getId(), cantidad);
-            
             return CarritoMapper.entityToDTO(actualizado);
-            
-            
-        } catch (PersistenciaException e) {
-            throw new CarritoException("Error al agregar producto");
+
+        } catch (CarritoException e) {
+            throw e;
+        } catch (Exception e) {
+            // Captura NullPointerException, RuntimeException y PersistenciaException
+            throw new CarritoException("Error al agregar producto al carrito: " + e.getMessage());
         }
     }
 

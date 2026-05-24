@@ -42,11 +42,11 @@
                                         <td>${p.stock}</td>
                                         <td>
                                             <div class="acciones-tabla">
-                                                <a href="${pageContext.request.contextPath}/cargarproducto?id=${p.id}&vista=editar"
+                                                <a href="${pageContext.request.contextPath}/EditarProducto?id=${p.id}"
                                                    class="btn-deportivo-accion btn-sm btn-azul">Editar</a>
                                                 <form action="${pageContext.request.contextPath}/borrarproducto" method="post" style="display:inline;"
                                                       onsubmit="return confirm('¿Eliminar este producto?')">
-                                                    <input type="hidden" name="productoId" value="${p.id}">
+                                                    <input type="hidden" name="idProducto" value="${p.id}">
                                                     <button type="submit" class="btn-deportivo-accion btn-sm btn-rojo">Eliminar</button>
                                                 </form>
                                             </div>
