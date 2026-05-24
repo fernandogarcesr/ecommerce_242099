@@ -4,6 +4,10 @@
  */
 package entidades;
 
+import java.util.Date;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.PrePersist;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,10 @@ public class Usuario implements Serializable {
     
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Reseña> resenias;
+
+    @Column(name = "fecha_registro")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaRegistro;
 
     public Long getId() {
         return id;
@@ -196,5 +204,19 @@ public class Usuario implements Serializable {
     public String toString() {
         return "entidades.Usuario[ id=" + id + " ]";
     }
-    
+
+    @PrePersist
+    public void prePersist() {
+        if (this.fechaRegistro == null) {
+            this.fechaRegistro = new Date();
+        }
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
 }

@@ -1,7 +1,7 @@
 package dtos;
 
 import java.util.List;
-
+import java.util.Date;
 /**
  *
  * @author Fernando Garces
@@ -16,6 +16,7 @@ public class UsuarioDTO {
      private Boolean esActivo;
      private RolUsuarioDTO rol;
      private List<ReseñaDTO> reseña;
+     private Date fechaRegistro;
 
     public UsuarioDTO(Long id, String nombre, String direccion, String telefono, String correo, String contrasenia, Boolean esActivo, RolUsuarioDTO rol, List<ReseñaDTO> reseña) {
         this.id = id;
@@ -132,7 +133,13 @@ public class UsuarioDTO {
     public String toString() {
         return "UsuarioDTO{" + "id=" + id + ", nombre=" + nombre + ", direccion=" + direccion + ", telefono=" + telefono + ", correo=" + correo + ", contrasenia=" + contrasenia + ", esActivo=" + esActivo + ", rol=" + rol + ", rese\u00f1a=" + reseña + '}';
     }
-     
-    
-     
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
 }

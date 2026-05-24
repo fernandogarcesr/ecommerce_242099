@@ -25,6 +25,7 @@ public class UsuarioMapper {
                 usuario.getContrasenia(),
                 usuario.getEsActivo(),
                 RolUsuarioMapper.toDTO(usuario.getRol()));
+        usuarioDTO.setFechaRegistro(usuario.getFechaRegistro());
         return usuarioDTO;
     }
 
