@@ -23,6 +23,13 @@
             </label>
         </div>
 
+        <div class="input-bloque">
+            <label class="opcion-radio-deportiva">
+                <input type="checkbox" name="soloDisponibles" value="true">
+                Solo productos en stock
+            </label>
+        </div>
+
         <button type="submit" class="btn-deportivo-accion" style="width: 100%;">Aplicar Filtros</button>
     </form>
 </div>
