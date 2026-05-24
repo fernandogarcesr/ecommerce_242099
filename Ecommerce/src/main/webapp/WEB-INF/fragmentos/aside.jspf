@@ -38,7 +38,7 @@
         <span class="sidebar-seccion">Administración</span>
         <ul class="menu-lista">
             <li>
-                <a href="${pageContext.request.contextPath}/cargarproducto?vista=adminProducto">
+                <a href="${pageContext.request.contextPath}/AdminPrincipal.jsp">
                     ⊟&nbsp; Panel admin
                 </a>
             </li>

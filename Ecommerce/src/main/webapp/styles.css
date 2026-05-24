@@ -579,6 +579,37 @@ html, body { height: 100%; }
     align-items: flex-start;
 }
 
+.logos-grid {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+/* Cada tarjeta de logo de pago */
+.logo-tarjeta {
+    width: 70px;
+    height: 44px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #fff;
+    padding: 4px;
+}
+
+.logo-tarjeta img {
+    max-width: 60px;
+    max-height: 36px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
 .caja-resumen {
     background: #fff;
     border: 1px solid var(--gris-borde);

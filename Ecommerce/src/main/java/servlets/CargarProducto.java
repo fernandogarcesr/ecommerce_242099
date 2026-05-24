@@ -46,6 +46,11 @@ public class CargarProducto extends HttpServlet {
         String idParam = request.getParameter("id");
         String vista = request.getParameter("vista");
 
+        // Parametros del filtro que viene del aside-filtro.jspf
+        String txtProducto = request.getParameter("txt_productos");
+        String txtPrecio = request.getParameter("txt_precio");
+        String orden = request.getParameter("orden");
+
         try {
             // Si viene un id, cargamos ese producto específico
             if (idParam != null && !idParam.isEmpty()) {
@@ -88,6 +93,42 @@ public class CargarProducto extends HttpServlet {
 
             // Cargar el inventario completo para Catálogo o Admin
             List<ProductoDTO> productos = productosBO.obtenerProductos();
+
+            // Filtrar por nombre si el usuario escribio algo en txt_productos
+            if (txtProducto != null && !txtProducto.trim().isEmpty()) {
+                String busqueda = txtProducto.trim().toLowerCase();
+                List<ProductoDTO> filtrados = new ArrayList<>();
+                for (ProductoDTO p : productos) {
+                    if (p.getNombre().toLowerCase().contains(busqueda)) {
+                        filtrados.add(p);
+                    }
+                }
+                productos = filtrados;
+            }
+
+            // Filtrar por precio si el usuario ingreso un valor base
+            if (txtPrecio != null && !txtPrecio.trim().isEmpty()) {
+                try {
+                    double precioBase = Double.parseDouble(txtPrecio.trim());
+                    List<ProductoDTO> filtrados = new ArrayList<>();
+                    for (ProductoDTO p : productos) {
+                        if ("Mayor".equals(orden)) {
+                            // Mayores al precio ingresado
+                            if (p.getPrecio() != null && p.getPrecio() >= precioBase) {
+                                filtrados.add(p);
+                            }
+                        } else {
+                            // Menores al precio ingresado (opcion por defecto)
+                            if (p.getPrecio() != null && p.getPrecio() <= precioBase) {
+                                filtrados.add(p);
+                            }
+                        }
+                    }
+                    productos = filtrados;
+                } catch (NumberFormatException e) {
+                    // Si el precio no es numero valido, ignoramos el filtro
+                }
+            }
 
             if ("adminProducto".equals(vista)) {
                 request.setAttribute("listaProductos", productos);

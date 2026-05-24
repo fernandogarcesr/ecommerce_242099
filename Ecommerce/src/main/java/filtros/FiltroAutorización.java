@@ -42,7 +42,11 @@ public class FiltroAutorización implements Filter {
         "modificar_pedido",
         "AdministrarResenias",
         "eliminarResenia",
-        "actualizarEstadoPedido",};
+        "actualizarEstadoPedido",
+        "administrar-usuarios",
+        "CargarCatalogoAdmin",
+        "cambiarEstadoUsuario",
+        "eliminarUsuario",};
 
 
     private String getPathSolicitado(HttpServletRequest request) {

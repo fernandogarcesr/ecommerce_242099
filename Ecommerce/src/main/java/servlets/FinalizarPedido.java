@@ -7,7 +7,6 @@ import dtos.CarritoDTO;
 import dtos.PedidoDTO;
 import dtos.UsuarioDTO;
 import exception.AgregarPedidoException;
-import exception.CarritoException;
 import interfaces.ICarritosBO;
 import interfaces.IPedidosBO;
 import java.io.IOException;
@@ -60,7 +59,7 @@ public class FinalizarPedido extends HttpServlet {
             );
 
             // Vaciar el carrito despues de confirmar el pedido
-            carritosBO.eliminarProducto(null, carrito.getId());
+            new implementaciones.CarritosDAO().limpiarCarrito(carrito.getId());
 
             // Limpiar el carrito de la sesion
             session.removeAttribute("carritoActual");

@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
@@ -69,7 +69,7 @@ public class AdministrarUsuarios extends HttpServlet {
     
             request.setAttribute("usuarios", listaUsuarios);
 
-            request.getRequestDispatcher("administrarUsuarios.jsp").forward(request, response);
+            request.getRequestDispatcher("/AdminUsuarios.jsp").forward(request, response);
         }catch(AdministrarUsuarioException e){
             request.setAttribute("mensaje", "Error: " + e.getMessage());
             request.getRequestDispatcher("/error.jsp").forward(request, response);

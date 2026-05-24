@@ -34,8 +34,8 @@
                     </thead>
                     <tbody>
                         <c:choose>
-                            <c:when test="${not empty requestScope.productos}">
-                                <c:forEach var="p" items="${requestScope.productos}">
+                            <c:when test="${not empty requestScope.listaProductos}">
+                                <c:forEach var="p" items="${requestScope.listaProductos}">
                                     <tr>
                                         <td style="font-weight:800;">${p.nombre}</td>
                                         <td style="color:var(--naranja);font-weight:800;">$${p.precio}</td>

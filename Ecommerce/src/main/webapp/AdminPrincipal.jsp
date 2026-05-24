@@ -27,7 +27,7 @@
 
         <div class="grid-admin-cards">
 
-            <a href="${pageContext.request.contextPath}/AdminUsuarios.jsp" class="admin-card-link">
+            <a href="${pageContext.request.contextPath}/administrar-usuarios" class="admin-card-link">
                 <div class="icono-card">&#9786;</div>
                 <div>
                     <div>Usuarios</div>
@@ -37,7 +37,7 @@
                 </div>
             </a>
 
-            <a href="${pageContext.request.contextPath}/AdminCatalogo.jsp" class="admin-card-link">
+            <a href="${pageContext.request.contextPath}/cargarproducto?vista=adminProducto" class="admin-card-link">
                 <div class="icono-card">&#9632;</div>
                 <div>
                     <div>Productos</div>
@@ -47,7 +47,7 @@
                 </div>
             </a>
 
-            <a href="${pageContext.request.contextPath}/AdminGestionPedidos.jsp" class="admin-card-link">
+            <a href="${pageContext.request.contextPath}/cargarpedidos" class="admin-card-link">
                 <div class="icono-card">&#9776;</div>
                 <div>
                     <div>Pedidos</div>
@@ -57,7 +57,7 @@
                 </div>
             </a>
 
-            <a href="${pageContext.request.contextPath}/AdminGestionResenias.jsp" class="admin-card-link">
+            <a href="${pageContext.request.contextPath}/AdministrarResenias" class="admin-card-link">
                 <div class="icono-card">&#9998;</div>
                 <div>
                     <div>Reseñas</div>
