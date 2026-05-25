@@ -70,7 +70,7 @@ public class FinalizarPedido extends HttpServlet {
             session.setAttribute("pedidoConfirmado", pedidoCreado);
             // Enviar correo de confirmación
             try {
-                enviarCorreoConfirmacion(usuario.getCorreo(), usuario.getNombre(), pedidoCreado.getId().toString());
+                enviarCorreoConfirmacion(usuario.getCorreo(), usuario.getNombre(), pedidoCreado.getId().toString(), carrito);
             } catch (Exception mailEx) {
                 System.err.println("Aviso: no se pudo enviar el correo: " + mailEx.getMessage());
             }
@@ -91,10 +91,10 @@ public class FinalizarPedido extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/CargarCarrito");
     }
 
-    private void enviarCorreoConfirmacion(String destinatario, String nombre, String numeroPedido) throws Exception {
+    private void enviarCorreoConfirmacion(String destinatario, String nombre, String numeroPedido, CarritoDTO carrito) throws Exception {
         String host = "smtp.gmail.com"; 
         String puerto = "587";
-        String usuario = "fernandogarcesrodriguez@gmail.com";   
+        String usuarioMail = "fernandogarcesrodriguez@gmail.com";   
         String clave = "yqbs zymw ibra tbas";
 
         java.util.Properties props = new java.util.Properties();
@@ -107,17 +107,37 @@ public class FinalizarPedido extends HttpServlet {
                 new jakarta.mail.Authenticator() {
             @Override
             protected jakarta.mail.PasswordAuthentication getPasswordAuthentication() {
-                return new jakarta.mail.PasswordAuthentication(usuario, clave);
+                return new jakarta.mail.PasswordAuthentication(usuarioMail, clave);
             }
         });
+        
+        // Construir detalle de productos
+        StringBuilder detalle = new StringBuilder();
+        double total = 0;
+        if (carrito != null && carrito.getDetallesCarrito() != null) {
+            for (dtos.DetallesCarritoDTO item : carrito.getDetallesCarrito()) {
+                double subtotal = item.getProducto().getPrecio() * item.getCantidadProductos();
+                total += subtotal;
+                detalle.append("  - ").append(item.getProducto().getNombre())
+                        .append(" x").append(item.getCantidadProductos())
+                        .append("  $").append(String.format("%.2f", subtotal))
+                        .append("\n");
+            }
+        }
+
+        String cuerpo = "Hola " + nombre + ",\n\n"
+                + "Tu pedido #" + numeroPedido + " ha sido confirmado exitosamente.\n\n"
+                + "Productos:\n"
+                + detalle.toString()
+                + "\nTotal: $" + String.format("%.2f", total) + "\n\n"
+                + "Gracias por comprar en SportsZone.";
 
         jakarta.mail.Message mensaje = new jakarta.mail.internet.MimeMessage(mailSession);
-        mensaje.setFrom(new jakarta.mail.internet.InternetAddress("fernandogarcesrodriguez@gmail.com"));
+        mensaje.setFrom(new jakarta.mail.internet.InternetAddress(usuarioMail));
         mensaje.setRecipients(jakarta.mail.Message.RecipientType.TO,
                 jakarta.mail.internet.InternetAddress.parse(destinatario));
         mensaje.setSubject("Pedido confirmado – SportsZone #" + numeroPedido);
-        mensaje.setText("Hola " + nombre + ",\n\nTu pedido #" + numeroPedido
-                + " ha sido confirmado exitosamente.\n\nGracias por comprar en SportsZone.");
+         mensaje.setText(cuerpo);
 
         jakarta.mail.Transport.send(mensaje);
     }

@@ -50,6 +50,7 @@ public class CargarProducto extends HttpServlet {
         String txtProducto = request.getParameter("txt_productos");
         String txtPrecio = request.getParameter("txt_precio");
         String orden = request.getParameter("orden");
+        String soloDisponibles = request.getParameter("soloDisponibles");
 
         try {
             // Si viene un id, cargamos ese producto específico
@@ -94,45 +95,55 @@ public class CargarProducto extends HttpServlet {
                 }
                 return;
             }
+            // Filtros
+            String nombre = (txtProducto != null && !txtProducto.trim().isEmpty())
+                    ? txtProducto.trim() : null;
 
-            // Cargar el inventario completo para Catálogo o Admin
-            List<ProductoDTO> productos = productosBO.obtenerProductos();
+            Double precioMin = null;
+            Double precioMax = null;
 
-            // Filtrar por nombre si el usuario escribio algo en txt_productos
-            if (txtProducto != null && !txtProducto.trim().isEmpty()) {
-                String busqueda = txtProducto.trim().toLowerCase();
+            // Si orden es null o vacío, default a "Menor"
+            if (orden == null || orden.trim().isEmpty()) {
+                orden = "Menor";
+            }
+
+            if (txtPrecio != null && !txtPrecio.trim().isEmpty()) {
+                try {
+                    double precioBase = Double.parseDouble(txtPrecio.trim());
+                    if ("Mayor".equals(orden)) {
+                        precioMin = precioBase;   // mayores al precio → precio mínimo
+                    } else {
+                        precioMax = precioBase;   // menores al precio → precio máximo
+                    }
+                } catch (NumberFormatException e) {
+                    // precio inválido, ignorar filtro
+                }
+            }
+
+            // Cargar el inventario completo para Catalogo o Admin
+            List<ProductoDTO> productos;
+            if (nombre != null || precioMin != null || precioMax != null) {
+                productos = productosBO.buscarProductos(nombre, precioMin, precioMax);
+            } else {
+                productos = productosBO.obtenerProductos();
+            }
+
+            // Filtro de solo disponible
+            if ("true".equals(soloDisponibles)) {
                 List<ProductoDTO> filtrados = new ArrayList<>();
                 for (ProductoDTO p : productos) {
-                    if (p.getNombre().toLowerCase().contains(busqueda)) {
+                    if (p.getDisponibilidad() != null
+                            && "DISPONIBLE".equals(p.getDisponibilidad().name())) {
                         filtrados.add(p);
                     }
                 }
                 productos = filtrados;
             }
 
-            // Filtrar por precio si el usuario ingreso un valor base
-            if (txtPrecio != null && !txtPrecio.trim().isEmpty()) {
-                try {
-                    double precioBase = Double.parseDouble(txtPrecio.trim());
-                    List<ProductoDTO> filtrados = new ArrayList<>();
-                    for (ProductoDTO p : productos) {
-                        if ("Mayor".equals(orden)) {
-                            // Mayores al precio ingresado
-                            if (p.getPrecio() != null && p.getPrecio() >= precioBase) {
-                                filtrados.add(p);
-                            }
-                        } else {
-                            // Menores al precio ingresado (opcion por defecto)
-                            if (p.getPrecio() != null && p.getPrecio() <= precioBase) {
-                                filtrados.add(p);
-                            }
-                        }
-                    }
-                    productos = filtrados;
-                } catch (NumberFormatException e) {
-                    // Si el precio no es numero valido, ignoramos el filtro
-                }
-            }
+            request.setAttribute("txtProducto", txtProducto);
+            request.setAttribute("txtPrecio", txtPrecio);
+            request.setAttribute("orden", orden);
+            request.setAttribute("soloDisponibles", soloDisponibles);
 
             if ("adminProducto".equals(vista)) {
                 request.setAttribute("listaProductos", productos);

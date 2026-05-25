@@ -23,8 +23,8 @@ const mostrarCargando = (tbody) => {
     }
 };
  
-// Funcion asíncrona con Fetch para filtrar productos
-const filtrarProductos = async (e) => {
+// Funcion asíncrona 
+const filtrarProductos = (e) => {
     e.preventDefault();
  
     const nombre  = document.getElementById('txt_productos')?.value.trim() || '';
@@ -42,38 +42,7 @@ const filtrarProductos = async (e) => {
         soloDisponibles: solo ? 'true' : ''
     });
  
-    const tbody = document.querySelector('.tabla-deportiva-global tbody');
-    mostrarCargando(tbody);
- 
-    try {
-        // Fetch con async/await 
-        const response = await fetch(url, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        });
- 
-        if (!response.ok) throw new Error('Error al obtener productos: ' + response.status);
- 
-        // BOM: actualizar la URL del navegador sin recargar 
-        window.history.pushState({}, '', url);
- 
-        // Navegar para que el JSP renderice la tabla con los resultados
-        window.location.href = url;
- 
-    } catch (error) {
-        // Promise explicita con resolve y reject
-        return new Promise((_resolve, reject) => {
-            reject(error);
-        }).catch(() => {
-            if (tbody) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="3" style="text-align:center;padding:2rem;color:var(--rojo);font-weight:700;">
-                            X Error al cargar productos. Intenta de nuevo.
-                        </td>
-                    </tr>`;
-            }
-        });
-    }
+    window.location.href = url;
 };
  
 // Limpiar filtros y recargar catálogo completo
@@ -112,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(timer);
             timer = setTimeout(() => {
                 const form = txtNombre.closest('form');
-                if (form) form.dispatchEvent(new Event('submit', { cancelable: true }));
+                if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
             }, 600);
         });
     }
