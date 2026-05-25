@@ -99,6 +99,7 @@
                 </table>
             </main>
             <script src="${pageContext.request.contextPath}/js/nav.js"></script>
+            <script src="${pageContext.request.contextPath}/js/adminUsuarios.js"></script>
             <%@include file="/WEB-INF/fragmentos/footer.jspf" %>
         </div>
     </body>

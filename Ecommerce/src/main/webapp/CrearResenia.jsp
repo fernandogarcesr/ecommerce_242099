@@ -82,6 +82,7 @@
             </div>
         </main>
         <script src="${pageContext.request.contextPath}/js/nav.js"></script>
+        <script src="${pageContext.request.contextPath}/js/crearResenia.js"></script>
         <%@include file="/WEB-INF/fragmentos/footer.jspf" %>
     </div>
 </body>

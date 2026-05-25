@@ -1,4 +1,4 @@
-    <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+        <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ page pageEncoding="UTF-8" %>
 <%-- aside.jspf — menu lateral de navegaciun --%>
 <aside class="sidebar-tienda">
